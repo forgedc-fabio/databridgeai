@@ -9,8 +9,8 @@
 
 - [x] **INFRA-01**: Supabase project configured with Auth, Postgres, Storage, and RLS enabled
 - [x] **INFRA-02**: Next.js frontend deployed on Vercel with Supabase credential sync
-- [ ] **INFRA-03**: Cognee FastAPI service deployed on Cloud Run (europe-west1)
-- [ ] **INFRA-04**: NetworkX graph store running inside Cognee container
+- [x] **INFRA-03**: Cognee FastAPI service deployed on Cloud Run (europe-west1)
+- [x] **INFRA-04**: NetworkX graph store running inside Cognee container
 - [ ] **INFRA-05**: Supabase Storage bucket for OWL files and uploaded content
 - [x] **INFRA-06**: User can log in via Supabase Auth and access protected routes
 
@@ -100,8 +100,8 @@
 |-------------|-------|--------|
 | INFRA-01 | Phase 1 | Complete |
 | INFRA-02 | Phase 1 | Complete |
-| INFRA-03 | Phase 1 | Pending |
-| INFRA-04 | Phase 1 | Pending |
+| INFRA-03 | Phase 1 | Complete |
+| INFRA-04 | Phase 1 | Complete |
 | INFRA-05 | Phase 1 | Pending |
 | INFRA-06 | Phase 1 | Complete |
 | ONT-01 | Phase 2 | Pending |

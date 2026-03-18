@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
+status: unknown
 stopped_at: Completed 01-01-PLAN.md
-last_updated: "2026-03-18T19:40:00.000Z"
+last_updated: "2026-03-18T20:17:03.547Z"
 progress:
   total_phases: 5
   completed_phases: 0
   total_plans: 3
-  completed_plans: 1
+  completed_plans: 2
 ---
 
 # Project State
@@ -62,6 +62,9 @@ Recent decisions affecting current work:
 - [01-01]: getClaims() over getSession() — server-side auth without network round-trip
 - [01-01]: NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY over legacy NEXT_PUBLIC_SUPABASE_ANON_KEY
 - [01-01]: Invite-only — no sign-up form, user accounts managed via Supabase dashboard
+- [Phase 01]: Artifact Registry (europe-west1-docker.pkg.dev) over gcr.io — gcr.io deprecated in GCP
+- [Phase 01]: Frontend must use authenticated server-side calls to Cognee — GCP org policy blocks allUsers
+- [Phase 01]: NetworkX as zero-infrastructure graph store for Cognee v1
 
 ### Pending Todos
 
