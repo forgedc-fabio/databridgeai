@@ -1,227 +1,90 @@
-# DataBridge AI — Project Definition
+# DataBridge AI
 
-## Vision
+## What This Is
 
-DataBridge AI is a content intelligence and data foundation platform purpose-built for pharmaceutical commercial operations. It extracts strategic intent from brand plans, journey designs, and content assets, encoding it as structured, relational data that contextualises every customer engagement against the brand strategy.
+An automated content intelligence system for pharmaceutical commercial operations. Users upload content files (PDFs, HTML pages, images, Word documents, spreadsheets) via a web dashboard, AI agents classify each file against governed rules and taxonomy, and structured metadata is stored in a queryable database. The system's classification behaviour is controlled by versioned documents, not code — rules and taxonomy can be updated without redeployment.
 
-**Positioning:** The missing data foundation pharma needs for the human-AI partnership to work — making data trusted, unified, and ready to power intelligent engagement at scale.
+Built as a reusable product for Forge DC. v1 is validated internally before client deployment.
 
-**Tagline:** Confidence for Humans. Context for AI.
+## Core Value
 
-## Problem Statement
+Content uploaded to the system is accurately classified against the active rules and taxonomy, with structured metadata queryable via the dashboard — without any human reading a single file.
 
-Pharma organisations generate rich strategic thinking during annual planning cycles, but that thinking is trapped in PowerPoints, spreadsheets, and people's heads. The **reasoning layer** — the strategic intent connecting a content asset to a brand objective, a journey plan to a conversion goal — was never treated as data.
+## Requirements
 
-The result: measurement environments that report *what happened* but cannot explain *why it mattered* in the context of the brand strategy. AI agents cannot reason about engagement without this context.
+### Validated
 
-## Solution — v1 (Content Classification Pipeline)
+<!-- Shipped and confirmed valuable. -->
 
-v1 delivers an automated content intelligence system. Point it at a source of files (S3, SFTP, URL), AI agents extract metadata using governed rules and taxonomy, and structured results are stored in a queryable database with a dashboard.
+(None yet — ship to validate)
 
-### What v1 Does
+### Active
 
-1. **Ingest** — Connect to content sources (S3, SFTP, URL), crawl files, detect types
-2. **Classify** — AI agents read each file, classify against rules and taxonomy, extract structured metadata
-3. **Store** — Persist validated metadata to PostgreSQL with full audit trail
-4. **Govern** — Rules and taxonomy documents control classification behaviour; updatable without code changes
-5. **Visualise** — Dashboard showing classification results, job status, compliance flags, and ingestion stats
-6. **Manage** — Upload/activate rules and taxonomy versions; trigger ingestion runs
+<!-- Current scope. Building toward these. -->
 
-### What v1 Does Not Do
+- [ ] Supabase schema with jobs, rules_versions, taxonomy_versions, content_metadata tables + RLS
+- [ ] Storage buckets for agent context (rules, taxonomy, prompts) and source content
+- [ ] Shared Python library with Pydantic validation models and Supabase client
+- [ ] Source connector that crawls content sources, detects MIME types, and queues jobs
+- [ ] Orchestrator that polls job queue and dispatches to correct agent
+- [ ] PDF agent that classifies content via Claude API against active rules/taxonomy
+- [ ] Supabase Edge Function as authenticated trigger endpoint
+- [ ] GitHub Actions CI/CD deploying agents to GCP Cloud Run
+- [ ] Next.js frontend on Vercel with login, dashboard, rules manager, and ingestion trigger
+- [ ] Admin account creation and role assignment
+- [ ] Real-time job status updates via Supabase Realtime
+- [ ] Import and storage capability for HTML, Image, DOCX, and CSV files
 
-- Customer profiling or segmentation (v2+ — Customer component)
-- Channel performance measurement (v2+ — Channel component)
-- Impact attribution or forecasting (v2+ — Impact component)
-- Real-time monitoring or continuous ingestion
-- Regulatory compliance sign-off (flags for triage only)
+### Out of Scope
 
-## Broader Vision (v2+)
+<!-- Explicit boundaries. Includes reasoning to prevent re-adding. -->
 
-The full platform implements a four-component Omnichannel Data Model:
+- Customer profiling/segmentation — v2+ (Customer component of broader data model)
+- Channel performance measurement — v2+ (Channel component)
+- Impact attribution/forecasting — v2+ (Impact component)
+- Real-time continuous monitoring — system processes on-demand when triggered
+- Regulatory compliance sign-off — flags are for triage only, not legal approval
+- Full classification agents for HTML/Image/DOCX/CSV — v2 (import and storage only in v1)
+- Mobile app — web-first
 
-| Component    | Purpose                                                                                                | v1 Status    |
-| ------------ | ------------------------------------------------------------------------------------------------------ | ------------ |
-| **Content**  | Contextual data applied to each content piece using common taxonomy                                    | **In scope** |
-| **Customer** | Unified customer profiles with interaction history, clinical context, behavioural/attitudinal segments | **In scope** |
-| **Channel**  | Standardised interaction data enabling cross-channel performance comparison                            | **In scope** |
-| **Impact**   | Attribution and forecasting combining engagement, cost, and strategic context                          | **In scope** |
+## Context
 
-v1 schema and architecture are designed to accommodate these components without re-platforming.
+**Product vision:** DataBridge AI is the first component of a broader Omnichannel Data Model with four pillars (Content, Customer, Channel, Impact). v1 builds the Content pillar as a standalone product. Architecture is designed to accommodate the other three pillars without re-platforming.
 
-## Target Users
+**Positioning:** "The missing data foundation pharma needs for the human-AI partnership to work." Tagline: "Confidence for Humans. Context for AI."
 
-### v1: ForgeDC Internal Team
+**Target users (v1):** ForgeDC internal team — Tom Botting (product owner), Fabio Barboza (technical lead), and colleagues validating with real pharma content.
 
-- Tom Botting (product owner)
-- Fabio Barboza (technical lead) — building and validating
-- ForgeDC colleagues — testing with real pharma content
-- Goal: prove the classification pipeline works before client deployment
+**Production users (post-v1):** VP/Director Omnichannel & Digital, Head of Marketing Operations/MarTech, Brand Directors, Data & Analytics teams.
 
-### Production Users (post-v1)
+**Rules & taxonomy:** Already exist. Versioned in Supabase Storage, updatable via Rules Manager UI. Running jobs complete against the version they started with.
 
-- VP/Director Omnichannel & Digital
-- Head of Marketing Operations / MarTech
-- Brand Directors / Franchise Leads
-- Data & Analytics teams
+**Classification model:** Five-level hierarchy (L0 domain → L1 sector → L2 therapeutic area → L3 condition → L4 product) plus metadata fields (language, title, brand, audience, content format, channel, key claims, compliance signals).
 
-## Tech Stack
+**Build brief:** A detailed technical build brief exists in NinjaWiki with exact schema DDL, Pydantic models, agent code patterns, and Cloud Run specs. Available at `NinjaWork/ForgeDC/_internal/DataBridgeAI/Briefs/architecture-build-brief.md`.
 
-| Layer | Technology | Flexibility |
-|-------|-----------|-------------|
-| Database | Supabase PostgreSQL (eu-west-1) | Fixed |
-| Auth | Supabase Auth + RLS | Fixed |
-| File storage | Supabase Storage | Fixed |
-| Job queue | pg-boss (on Supabase Postgres) | Open to alternatives |
-| API trigger | Supabase Edge Function (Deno) | Open to alternatives |
-| Compute | GCP Cloud Run (europe-west1) | Fixed |
-| Container registry | GCP Artifact Registry | Fixed |
-| Secrets | GCP Secret Manager | Fixed |
-| Frontend | Next.js (App Router) + shadcn/ui + Tailwind CSS | Fixed |
-| Frontend hosting | Vercel | Fixed |
-| LLM | Anthropic Claude API (claude-sonnet-4) | Fixed |
-| CI/CD | GitHub Actions | Fixed |
-| Language (agents) | Python | Fixed |
-| Validation | Pydantic | Fixed |
+## Constraints
 
-Core stack (Supabase, Cloud Run, Claude, Next.js on Vercel, Python) is firm. Implementation details (job queue mechanism, dispatch patterns, edge function vs alternatives) are open to research-based challenge.
+- **Tech stack (fixed):** Supabase PostgreSQL, Supabase Auth + RLS, GCP Cloud Run (europe-west1), Anthropic Claude API (claude-sonnet-4), Next.js on Vercel, Python agents, Pydantic validation, GitHub Actions CI/CD
+- **Tech stack (flexible):** Job queue (pg-boss specified but open to alternatives), API trigger (Edge Function specified but open to alternatives)
+- **Security:** SUPABASE_SERVICE_ROLE_KEY and ANTHROPIC_API_KEY must never appear in source files — GCP Secret Manager only. RLS enabled on all tables. Multi-stage Docker builds.
+- **Code standards:** All Python code must use type hints. All Dockerfiles must use multi-stage builds.
+- **Deployment:** Vercel auto-deploys frontend from GitHub. Supabase Vercel Integration syncs credentials. GCP Cloud Run for agents/orchestrator.
+- **Single developer:** Built and maintained by one developer with AI assistance — code must be clean, documented, and maintainable.
 
-## Architecture
+## Key Decisions
 
-### Four Platforms
+<!-- Decisions that constrain future work. Add throughout project lifecycle. -->
 
-- **Supabase** — Data & control plane (database, auth, file storage, job queue, realtime)
-- **GCP Cloud Run** — Compute (agents, orchestrator)
-- **Vercel** — Frontend hosting (Next.js dashboard)
-- **Anthropic Claude API** — Intelligence (content classification)
-
-### Vercel + Supabase Deployment
-
-Two integrations work together serving different purposes:
-
-- **GitHub → Vercel (deployment):** Vercel watches the GitHub repo and auto-deploys the Next.js app on every push to `main`. Preview deployments are created on pull requests.
-- **Supabase → Vercel (environment sync):** The Supabase Vercel Integration automatically syncs Supabase credentials (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`) into Vercel's environment variables. This eliminates manual key copying and can map different Supabase projects to different Vercel environments (e.g. preview → staging Supabase, production → production Supabase) if needed later.
-
-### Monorepo Structure
-
-```
-databridgeai/
-├── frontend/           # Next.js dashboard
-│   ├── app/
-│   │   ├── (auth)/login/
-│   │   ├── dashboard/
-│   │   ├── rules/
-│   │   └── ingest/
-│   ├── components/
-│   ├── lib/supabase/
-│   └── middleware.ts
-├── agents/             # Python AI agents
-│   ├── source-connector/
-│   ├── orchestrator/
-│   └── pdf-agent/
-├── shared/             # Shared Python library
-│   ├── models.py
-│   └── supabase_client.py
-├── supabase/           # Database migrations & edge functions
-│   ├── migrations/
-│   └── functions/ingest/
-└── .github/workflows/  # CI/CD
-```
-
-### Data Flow
-
-```
-User triggers run → Edge Function → Source Connector (crawl + detect + queue)
-→ Orchestrator (poll + dispatch) → Agent (fetch rules + classify via Claude + validate + store)
-→ Dashboard (realtime updates)
-```
-
-### Key Design Principles
-
-1. **Rules-driven, not code-driven** — Classification logic in versioned documents, not application code
-2. **Scale to zero** — Agent workers only run when work exists
-3. **Auditable** — Every record retains raw agent output, rules version, and source URL
-4. **Separation of concerns** — Supabase owns data, GCP owns compute, Anthropic owns intelligence
-
-## v1 Build Phases (from Build Brief)
-
-| Step | Component | Description |
-|------|-----------|-------------|
-| 1 | Supabase Schema | DDL for jobs, rules_versions, taxonomy_versions, content_metadata + RLS + storage buckets |
-| 2 | Shared Python Library | Pydantic models + Supabase client |
-| 3 | Source Connector | Crawl sources, detect MIME types, queue jobs |
-| 4 | Orchestrator | Poll job queue, dispatch to correct agent |
-| 5 | PDF Agent | Fetch rules/taxonomy, classify PDF content via Claude, validate and store |
-| 6 | Edge Function | Authenticated trigger endpoint (fire-and-forget) |
-| 7 | CI/CD | GitHub Actions (agents to GCP), Vercel (frontend auto-deploy) |
-| 8 | Frontend | Login, Dashboard, Rules Manager, Ingestion Trigger, Account Management |
-
-Additional file types (HTML, Image, DOCX, CSV) need import and storage capability but full agent classification is deferred.
-
-## Governance
-
-### Rules & Taxonomy
-
-- Rules document and taxonomy dictionary **already exist** and govern agent classification behaviour
-- Both are versioned in Supabase Storage
-- Updatable via the Rules Manager UI — no code changes needed
-- Running jobs complete against the version they started with
-
-### Access Control
-
-| Role | Dashboard | Trigger Runs | Manage Rules | Export Data | Create Accounts |
-|------|-----------|-------------|-------------|-------------|-----------------|
-| Admin | Yes | Yes | Yes | Yes | Yes |
-| Viewer | Yes | No | No | Yes | No |
-
-Account creation is admin-only. Admins can create new user accounts and assign roles via the dashboard.
-
-## Security Constraints
-
-- `SUPABASE_SERVICE_ROLE_KEY` and `ANTHROPIC_API_KEY` must never appear in source files — Secret Manager only
-- Rules and taxonomy fetched at runtime from Supabase Storage — never hardcoded
-- RLS enabled on all tables
-- All Python code must use type hints
-- All Dockerfiles must use multi-stage builds
-
-## Success Criteria (v1)
-
-1. PDF content successfully classified against rules and taxonomy with >0.8 confidence
-2. End-to-end pipeline working: trigger → crawl → classify → store → display
-3. Dashboard showing real-time job status and classification results
-4. Rules and taxonomy updatable without code deployment
-5. ForgeDC team can ingest a batch of test files and query structured results
-6. All infrastructure deployed via CI/CD (agents to GCP, frontend to Vercel)
-7. Account creation flow working for admin users
-
-## Infrastructure
-
-| Service | Detail |
-|---------|--------|
-| GitHub | [ForgeDC/databridgeai](https://github.com/ForgeDC/databridgeai) |
-| Supabase Project | databridgeai (`vkdcliaocklnlbthwdpx`) |
-| Supabase Org | Forge DC (`uwyhxwvvzcqywaakvgke`) |
-| GCP Region | europe-west1 |
-| Supabase Region | eu-west-1 |
-| Frontend Hosting | Vercel |
-
-## Dependencies
-
-- Anthropic Claude API access (claude-opus-4-6)
-- GCP project with Cloud Run, Artifact Registry, Secret Manager enabled
-- Supabase project (exists: databridgeai)
-- GitHub repository (exists: ForgeDC/databridgeai)
-- Rules and taxonomy documents (exist)
-- Test content files (not yet defined)
-
-## Risks
-
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Classification quality depends on rules/taxonomy quality | Low confidence, poor metadata | Iterative rules refinement; audit trail enables reprocessing |
-| Claude API latency/cost at scale | Slow processing, high costs | Batch processing, caching, model selection per agent |
-| pg-boss on Supabase Postgres may have limitations | Job queue reliability | Research alternatives during planning |
-| Single-developer project | Bus factor | Clean code, documentation, GSD planning |
+| Decision | Rationale | Outcome |
+|----------|-----------|---------|
+| Frontend on Vercel (not Cloud Run) | Native Next.js support, preview deployments on PRs, Supabase integration for credential sync | -- Pending |
+| Supabase for data + auth + storage | Unified data plane, built-in RLS, Realtime subscriptions, Edge Functions | -- Pending |
+| GCP Cloud Run for agents | Scale-to-zero containers, pay-per-use, europe-west1 region | -- Pending |
+| Rules-driven classification | Decouples classification logic from code, enables non-technical updates | -- Pending |
+| PDF agent only for v1 classification | Prove pattern with one agent, other file types get import/storage only | -- Pending |
+| Admin-only account creation | Controlled access for internal validation phase | -- Pending |
+| Monorepo structure | Frontend, agents, shared lib, and infra in one repo for single-developer workflow | -- Pending |
 
 ---
-
-*Generated by GSD new-project flow | 2026-03-18*
+*Last updated: 2026-03-18 after initialization*
