@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: unknown
-stopped_at: Phase 1 UI-SPEC approved
-last_updated: "2026-03-18T19:25:42.088Z"
+status: executing
+stopped_at: Completed 01-01-PLAN.md
+last_updated: "2026-03-18T19:40:00.000Z"
 progress:
   total_phases: 5
   completed_phases: 0
   total_plans: 3
-  completed_plans: 0
+  completed_plans: 1
 ---
 
 # Project State
@@ -24,26 +24,26 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 ## Current Position
 
 Phase: 01 (infrastructure) — EXECUTING
-Plan: 1 of 3
+Plan: 2 of 3
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 0
-- Average duration: -
-- Total execution time: 0 hours
+- Total plans completed: 1
+- Average duration: ~90 min
+- Total execution time: ~1.5 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 01-infrastructure | 1/3 | ~90min | ~90min |
 
 **Recent Trend:**
 
-- Last 5 plans: -
-- Trend: -
+- Last 5 plans: 01-01 (~90min)
+- Trend: baseline established
 
 *Updated after each plan completion*
 
@@ -57,6 +57,11 @@ Recent decisions affecting current work:
 - [Roadmap]: Cognee replaces direct Claude agent pipeline — research findings about pg-boss, orchestrator, PDF agents are superseded
 - [Roadmap]: Phases 2, 3, 4 are independent of each other (all depend on Phase 1 only); ordered by architectural priority
 - [Roadmap]: Phase 5 (Content) depends on Phase 2 (Ontology) because Cognee sync must be established before content processing
+- [01-01]: Vercel + Supabase Marketplace integration for auto-synced credentials — no manual env var management
+- [01-01]: proxy.ts filename (not middleware.ts) follows current @supabase/ssr conventions
+- [01-01]: getClaims() over getSession() — server-side auth without network round-trip
+- [01-01]: NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY over legacy NEXT_PUBLIC_SUPABASE_ANON_KEY
+- [01-01]: Invite-only — no sign-up form, user accounts managed via Supabase dashboard
 
 ### Pending Todos
 
@@ -68,6 +73,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-18T17:03:55.282Z
-Stopped at: Phase 1 UI-SPEC approved
-Resume file: .planning/phases/01-infrastructure/01-UI-SPEC.md
+Last session: 2026-03-18T19:40:00.000Z
+Stopped at: Completed 01-01-PLAN.md
+Resume file: .planning/phases/01-infrastructure/01-02-PLAN.md

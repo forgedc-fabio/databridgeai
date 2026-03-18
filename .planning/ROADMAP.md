@@ -33,7 +33,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Scaffold Next.js 16 project, Supabase auth, proxy route protection, and login page
+- [x] 01-01-PLAN.md — Scaffold Next.js 16 project, Supabase auth, proxy route protection, and login page
 - [ ] 01-02-PLAN.md — Cognee backend Dockerfile, dependencies, and Cloud Run deployment
 - [ ] 01-03-PLAN.md — Dashboard shell with sidebar, health status, Storage bucket, and full integration
 
@@ -111,7 +111,7 @@ Note: Phases 2, 3, and 4 all depend on Phase 1 but not on each other. They are o
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Infrastructure | 0/3 | Planning complete | - |
+| 1. Infrastructure | 1/3 | In progress | - |
 | 2. Ontology Management | 0/3 | Not started | - |
 | 3. Data Dictionary | 0/2 | Not started | - |
 | 4. Rules Management | 0/3 | Not started | - |
