@@ -1,0 +1,17 @@
+{
+  "mode": "yolo",
+  "granularity": "quick",
+  "model_profile": "quality",
+  "commit_docs": true,
+  "parallelization": true,
+  "branching_strategy": "none",
+  "workflow": {
+    "research": true,
+    "plan_check": true,
+    "verifier": true,
+    "auto_advance": false,
+    "nyquist_validation": true
+  },
+  "created_at": "2026-03-18",
+  "project": "DataBridgeAI"
+}
