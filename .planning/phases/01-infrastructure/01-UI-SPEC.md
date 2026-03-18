@@ -102,26 +102,26 @@ Health status dots are 8px diameter circles with the corresponding fill color, d
 
 ## Copywriting Contract
 
-| Element | Copy |
-|---------|------|
-| Login page title | "Sign in to DataBridge AI" |
-| Login email label | "Email address" |
-| Login password label | "Password" |
-| Login submit button (Primary CTA) | "Sign in" |
-| Login error (invalid credentials) | "Invalid email or password. Please try again." |
-| Login error (network) | "Unable to reach the authentication service. Please try again in a moment." |
-| Dashboard welcome heading | "Welcome back, {first_name}" (fallback: "Welcome back") |
-| Dashboard welcome body | "DataBridge AI — Content Intelligence Platform" |
-| Cognee health card title | "System Status" |
-| Cognee healthy | "Cognee: Connected" |
-| Cognee degraded | "Cognee: Degraded — service responding with errors" |
-| Cognee unreachable | "Cognee: Unreachable — service is not responding" |
-| Storage healthy | "Storage: Available" |
-| Storage unreachable | "Storage: Unavailable — file operations will fail" |
-| Disabled nav item tooltip | "{Section name} — available in a future update" |
-| Sidebar footer | "DataBridge AI" |
-| Empty dashboard state | Not applicable — dashboard always shows welcome card and health status |
-| Destructive confirmation | Not applicable — no destructive actions in Phase 1 |
+| Element                           | Copy                                                                        |
+| --------------------------------- | --------------------------------------------------------------------------- |
+| Login page title                  | "Sign in to DataBridge AI"                                                  |
+| Login email label                 | "Email address"                                                             |
+| Login password label              | "Password"                                                                  |
+| Login submit button (Primary CTA) | "Sign in"                                                                   |
+| Login error (invalid credentials) | "Invalid email or password. Please try again."                              |
+| Login error (network)             | "Unable to reach the authentication service. Please try again in a moment." |
+| Dashboard welcome heading         | "Welcome back, {first_name}" (fallback: "Welcome back")                     |
+| Dashboard welcome body            | "DataBridge AI — Content Intelligence Platform"                             |
+| Cognee health card title          | "System Status"                                                             |
+| Cognee healthy                    | "Cognee: Connected"                                                         |
+| Cognee degraded                   | "Cognee: Degraded — service responding with errors"                         |
+| Cognee unreachable                | "Cognee: Unreachable — service is not responding"                           |
+| Storage healthy                   | "Storage: Available"                                                        |
+| Storage unreachable               | "Storage: Unavailable — file operations will fail"                          |
+| Disabled nav item tooltip         | "{Section name} — available in a future update"                             |
+| Sidebar footer                    | "DataBridge AI"                                                             |
+| Empty dashboard state             | Not applicable — dashboard always shows welcome card and health status      |
+| Destructive confirmation          | Not applicable — no destructive actions in Phase 1                          |
 
 ---
 
