@@ -11,7 +11,7 @@
 - [x] **INFRA-02**: Next.js frontend deployed on Vercel with Supabase credential sync
 - [x] **INFRA-03**: Cognee FastAPI service deployed on Cloud Run (europe-west1)
 - [x] **INFRA-04**: NetworkX graph store running inside Cognee container
-- [ ] **INFRA-05**: Supabase Storage bucket for OWL files and uploaded content
+- [x] **INFRA-05**: Supabase Storage bucket for OWL files and uploaded content
 - [x] **INFRA-06**: User can log in via Supabase Auth and access protected routes
 
 ### Ontology Management
@@ -102,7 +102,7 @@
 | INFRA-02 | Phase 1 | Complete |
 | INFRA-03 | Phase 1 | Complete |
 | INFRA-04 | Phase 1 | Complete |
-| INFRA-05 | Phase 1 | Pending |
+| INFRA-05 | Phase 1 | Complete |
 | INFRA-06 | Phase 1 | Complete |
 | ONT-01 | Phase 2 | Pending |
 | ONT-02 | Phase 2 | Pending |
