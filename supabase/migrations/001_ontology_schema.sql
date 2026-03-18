@@ -221,10 +221,7 @@ insert into public.tenants (id, name)
 values ('00000000-0000-0000-0000-000000000001', 'Forge DC');
 
 -- Seed user profile for existing authenticated user
--- IMPORTANT: Replace <AUTH_USER_ID> with the actual user ID from auth.users
--- Run: select id from auth.users where email = 'fabio.barboza@forgedc.com';
--- Then uncomment and update the line below:
--- insert into public.user_profiles (user_id, tenant_id) values ('<AUTH_USER_ID>', '00000000-0000-0000-0000-000000000001');
+insert into public.user_profiles (user_id, tenant_id) values ('f36b7669-4325-48ff-bf7f-260114753331', '00000000-0000-0000-0000-000000000001');
 
 -- Seed system relationship types
 insert into public.ontology_relationship_types (tenant_id, name, is_system) values
