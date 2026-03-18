@@ -49,18 +49,18 @@ export function AppSidebar() {
                       </SidebarMenuButton>
                     ) : (
                       <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div>
-                            <SidebarMenuButton
-                              className="opacity-50 cursor-not-allowed"
-                              aria-disabled="true"
-                              tabIndex={-1}
-                              onClick={(e) => e.preventDefault()}
-                            >
-                              <item.icon className="size-5" />
-                              <span>{item.title}</span>
-                            </SidebarMenuButton>
-                          </div>
+                        <TooltipTrigger
+                          className="w-full"
+                          onClick={(e) => e.preventDefault()}
+                        >
+                          <SidebarMenuButton
+                            className="opacity-50 cursor-not-allowed"
+                            aria-disabled="true"
+                            tabIndex={-1}
+                          >
+                            <item.icon className="size-5" />
+                            <span>{item.title}</span>
+                          </SidebarMenuButton>
                         </TooltipTrigger>
                         <TooltipContent side="right">
                           {item.title} — available in a future update
