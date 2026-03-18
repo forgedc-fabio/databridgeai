@@ -16,19 +16,19 @@
 
 ### Ontology Management
 
-- [ ] **ONT-01**: User can view list of ontology classes (entity types) in a DataTable
-- [ ] **ONT-02**: User can create, edit, and delete ontology classes with properties
-- [ ] **ONT-03**: User can define relationships between classes via form with dropdowns
-- [ ] **ONT-04**: User can define hierarchies and constraints between classes
+- [x] **ONT-01**: User can view list of ontology classes (entity types) in a DataTable
+- [x] **ONT-02**: User can create, edit, and delete ontology classes with properties
+- [x] **ONT-03**: User can define relationships between classes via form with dropdowns
+- [x] **ONT-04**: User can define hierarchies and constraints between classes
 - [ ] **ONT-05**: Ontology data is tenant-scoped (tenant_id) with RLS
-- [ ] **ONT-06**: Ontology editor has three views: Class List, Relationship Editor, Visual Graph
-- [ ] **ONT-07**: Visual graph uses Cytoscape.js with hierarchical/DAG layout
+- [x] **ONT-06**: Ontology editor has three views: Class List, Relationship Editor, Visual Graph
+- [x] **ONT-07**: Visual graph uses Cytoscape.js with hierarchical/DAG layout
 - [ ] **ONT-08**: User can view read-only presentation-optimised ontology visualisation
-- [ ] **ONT-09**: Visualisation supports filter by domain, expand/collapse, and search
+- [x] **ONT-09**: Visualisation supports filter by domain, expand/collapse, and search
 - [ ] **ONT-10**: User can export ontology visualisation as PNG/SVG
-- [ ] **ONT-11**: Ontology syncs to Cognee as OWL/RDF file via Cloud Run endpoint
-- [ ] **ONT-12**: UI shows stale indicator when ontology changed since last sync
-- [ ] **ONT-13**: OWL generated via rdflib on Cloud Run and stored in Supabase Storage
+- [x] **ONT-11**: Ontology syncs to Cognee as OWL/RDF file via Cloud Run endpoint
+- [x] **ONT-12**: UI shows stale indicator when ontology changed since last sync
+- [x] **ONT-13**: OWL generated via rdflib on Cloud Run and stored in Supabase Storage
 
 ### Data Dictionary
 
@@ -104,19 +104,19 @@
 | INFRA-04 | Phase 1 | Complete |
 | INFRA-05 | Phase 1 | Complete |
 | INFRA-06 | Phase 1 | Complete |
-| ONT-01 | Phase 2 | Pending |
-| ONT-02 | Phase 2 | Pending |
-| ONT-03 | Phase 2 | Pending |
-| ONT-04 | Phase 2 | Pending |
+| ONT-01 | Phase 2 | Complete |
+| ONT-02 | Phase 2 | Complete |
+| ONT-03 | Phase 2 | Complete |
+| ONT-04 | Phase 2 | Complete |
 | ONT-05 | Phase 2 | Pending |
-| ONT-06 | Phase 2 | Pending |
-| ONT-07 | Phase 2 | Pending |
+| ONT-06 | Phase 2 | Complete |
+| ONT-07 | Phase 2 | Complete |
 | ONT-08 | Phase 2 | Pending |
-| ONT-09 | Phase 2 | Pending |
+| ONT-09 | Phase 2 | Complete |
 | ONT-10 | Phase 2 | Pending |
-| ONT-11 | Phase 2 | Pending |
-| ONT-12 | Phase 2 | Pending |
-| ONT-13 | Phase 2 | Pending |
+| ONT-11 | Phase 2 | Complete |
+| ONT-12 | Phase 2 | Complete |
+| ONT-13 | Phase 2 | Complete |
 | DD-01 | Phase 3 | Pending |
 | DD-02 | Phase 3 | Pending |
 | DD-03 | Phase 3 | Pending |
