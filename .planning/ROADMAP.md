@@ -47,12 +47,14 @@ Plans:
   3. User can view a read-only presentation-optimised graph with filter, expand/collapse, search, and PNG/SVG export
   4. User can sync the ontology to Cognee and sees a stale indicator when the ontology has changed since last sync
   5. Ontology data is tenant-scoped and enforced by RLS
-**Plans**: TBD
+**Plans**: 5 plans
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
-- [ ] 02-03: TBD
+- [ ] 02-01-PLAN.md — Database schema, TypeScript types, shadcn/ui + Cytoscape dependencies, nav enablement
+- [ ] 02-02-PLAN.md — Class List DataTable with CRUD side panel, tab container, empty state, delete confirmation
+- [ ] 02-03-PLAN.md — Relationship Editor DataTable with CRUD dialog, hierarchy validation, inline type creation
+- [ ] 02-04-PLAN.md — Cytoscape graph visualisation, presentation view, filter/search/export controls
+- [ ] 02-05-PLAN.md — Cognee sync pipeline: OWL generation on Cloud Run, sync button, stale indicator
 
 ### Phase 3: Data Dictionary
 **Goal**: Users can manage a versioned taxonomy of 45+ fields across 7 categories with visual exploration
@@ -112,7 +114,7 @@ Note: Phases 2, 3, and 4 all depend on Phase 1 but not on each other. They are o
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Infrastructure | 3/3 | Complete   | 2026-03-18 |
-| 2. Ontology Management | 0/3 | Not started | - |
+| 2. Ontology Management | 0/5 | Planned | - |
 | 3. Data Dictionary | 0/2 | Not started | - |
 | 4. Rules Management | 0/3 | Not started | - |
 | 5. Content Ingestion | 0/2 | Not started | - |
