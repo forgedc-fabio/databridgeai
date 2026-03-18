@@ -17,7 +17,7 @@ export const NAV_ITEMS = [
     title: "Ontology",
     url: "/ontology",
     icon: Network,
-    enabled: false, // Phase 2
+    enabled: true, // Phase 2
   },
   {
     title: "Dictionary",
