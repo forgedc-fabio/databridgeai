@@ -54,11 +54,11 @@ Exceptions: Cytoscape graph container uses `h-[600px]` fixed height to ensure re
 | Role | Size | Weight | Line Height | Usage |
 |------|------|--------|-------------|-------|
 | Body | 14px | 400 (regular) | 1.5 | Table cells, form descriptions, paragraph text |
-| Label | 14px | 500 (medium) | 1.4 | Form labels, column headers, tab labels, badges |
+| Label | 14px | 600 (semibold) | 1.4 | Form labels, column headers, tab labels, badges |
 | Heading | 20px | 600 (semibold) | 1.2 | Page titles ("Ontology Editor"), section headings |
 | Display | 28px | 600 (semibold) | 1.2 | Empty state heading only |
 
-Font: Geist Sans throughout. No secondary typeface.
+Font: Geist Sans throughout. No secondary typeface. Two weights only: 400 (regular) and 600 (semibold).
 
 Source: Geist font declared in `src/app/layout.tsx`; shadcn base-nova defaults
 
@@ -117,6 +117,8 @@ Source: RESEARCH.md `DOMAIN_COLOURS` constant; CONTEXT.md locked decision on nod
 
 ### Class List View (ONT-01, ONT-02)
 
+**Focal point:** The DataTable is the primary focal element. It occupies the full content width below the tab bar and draws the eye via data density contrast against the white page background. The "Create Class" primary action button (top-right, accent colour) serves as the secondary focal point for empty and sparse states.
+
 | Component | Detail |
 |-----------|--------|
 | DataTable | shadcn table + `@tanstack/react-table` |
@@ -134,7 +136,7 @@ Source: RESEARCH.md `DOMAIN_COLOURS` constant; CONTEXT.md locked decision on nod
 | Container | shadcn `Sheet` — slides in from right, 480px wide |
 | Form fields | Name (Input, required), Description (Textarea), Domain Group (Select with options: Clinical, Commercial, Regulatory, Medical, Manufacturing), Colour (colour picker or Select), Icon Tag (Input), Custom Attributes (dynamic key-value list) |
 | Custom attributes | Repeatable row: Key (Input) + Type (Select: text, number, boolean, enum) + Value (Input) — add/remove buttons |
-| Actions | "Save" (primary), "Cancel" (ghost/outline) — bottom of panel |
+| Actions | "Save Class" (primary), "Discard Changes" (ghost/outline) — bottom of panel |
 | Validation | Name required, unique within tenant; inline error messages below fields |
 
 ### Relationship Editor View (ONT-03, ONT-04)
@@ -213,8 +215,10 @@ Source: RESEARCH.md `DOMAIN_COLOURS` constant; CONTEXT.md locked decision on nod
 | Error state (sync) | "Sync failed: {error}. Check the Cognee connection status on the dashboard and try again." |
 | Error state (duplicate name) | "A class with this name already exists. Choose a different name." |
 | Error state (circular hierarchy) | "Cannot create this relationship — it would create a circular hierarchy: {path}." |
+| Class Edit Panel save | "Save Class" |
+| Class Edit Panel dismiss | "Discard Changes" |
 | Destructive: Delete Class | Title: "Delete {className}?" Body: "This will permanently delete the class and remove {count} relationship(s). This action cannot be undone." Actions: "Delete Class" / "Cancel" |
-| Destructive: Delete Relationship | Title: "Delete relationship?" Body: "Remove the {type} relationship between {source} and {target}?" Actions: "Delete" / "Cancel" |
+| Destructive: Delete Relationship | Title: "Delete relationship?" Body: "Remove the {type} relationship between {source} and {target}?" Actions: "Delete Relationship" / "Cancel" |
 | Stale indicator tooltip | "Ontology has changed since last sync" |
 | Sync success toast | "Ontology synced to Cognee" |
 | Tab labels | "Classes", "Relationships", "Graph" |
