@@ -63,12 +63,12 @@ Exceptions: 44px minimum touch target for sidebar navigation items and the login
 
 | Role | Size | Weight | Line Height | Usage |
 |------|------|--------|-------------|-------|
-| Body | 16px | 400 (regular) | 1.5 | Default text, form labels, sidebar labels, health status descriptions |
-| Label | 14px | 500 (medium) | 1.4 | Form field labels, badge text, sidebar collapsed tooltips, metadata captions |
+| Body | 16px | 400 (regular) | 1.5 | Default text, sidebar labels, health status descriptions |
+| Label | 14px | 400 (regular) | 1.4 | Form field labels, badge text, sidebar collapsed tooltips, metadata captions |
 | Heading | 20px | 600 (semibold) | 1.2 | Card titles ("Welcome back"), section headings, login page title |
 | Display | 28px | 600 (semibold) | 1.2 | Page-level heading (dashboard title) — used sparingly, one per page maximum |
 
-**Weights declared:** 400 (regular) and 600 (semibold). 500 (medium) is permitted only for the Label role as defined above.
+**Weights declared:** 400 (regular) and 600 (semibold). Labels at 14px are visually distinct from Body at 16px through size alone — no additional weight needed.
 
 ---
 
@@ -269,5 +269,5 @@ No additional responsive breakpoints or mobile-specific layouts for Phase 1.
 | Sidebar icons | CONTEXT.md — Claude's Discretion | "Exact sidebar styling, collapse behaviour, icon choices" — chose lucide-react defaults from RESEARCH.md |
 | Health presentation | CONTEXT.md — Claude's Discretion | "Dashboard welcome card copy and health status presentation" — chose dot + label pattern |
 | Spacing scale | Default | Standard 8-point scale (4px multiples) — industry standard |
-| Typography scale | Default | 14/16/20/28 — standard body-first scale for data-heavy applications |
+| Typography scale | Default | 14/16/20/28 at 2 weights (400, 600) — standard body-first scale for data-heavy applications |
 | Geist Sans font | Default | Next.js 16 default font via `next/font` — no additional font loading |
