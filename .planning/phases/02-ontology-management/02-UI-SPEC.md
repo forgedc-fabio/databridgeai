@@ -197,7 +197,7 @@ Source: RESEARCH.md `DOMAIN_COLOURS` constant; CONTEXT.md locked decision on nod
 | Container | shadcn `AlertDialog` |
 | Trigger | Delete action in class row dropdown or within edit panel |
 | Content | Lists relationships that will be removed with the class |
-| Actions | "Delete Class" (destructive variant), "Cancel" (outline) |
+| Actions | "Delete Class" (destructive variant), "Keep Class" (outline) |
 
 ---
 
@@ -217,8 +217,8 @@ Source: RESEARCH.md `DOMAIN_COLOURS` constant; CONTEXT.md locked decision on nod
 | Error state (circular hierarchy) | "Cannot create this relationship — it would create a circular hierarchy: {path}." |
 | Class Edit Panel save | "Save Class" |
 | Class Edit Panel dismiss | "Discard Changes" |
-| Destructive: Delete Class | Title: "Delete {className}?" Body: "This will permanently delete the class and remove {count} relationship(s). This action cannot be undone." Actions: "Delete Class" / "Cancel" |
-| Destructive: Delete Relationship | Title: "Delete relationship?" Body: "Remove the {type} relationship between {source} and {target}?" Actions: "Delete Relationship" / "Cancel" |
+| Destructive: Delete Class | Title: "Delete {className}?" Body: "This will permanently delete the class and remove {count} relationship(s). This action cannot be undone." Actions: "Delete Class" / "Keep Class" |
+| Destructive: Delete Relationship | Title: "Delete relationship?" Body: "Remove the {type} relationship between {source} and {target}?" Actions: "Delete Relationship" / "Keep Relationship" |
 | Stale indicator tooltip | "Ontology has changed since last sync" |
 | Sync success toast | "Ontology synced to Cognee" |
 | Tab labels | "Classes", "Relationships", "Graph" |
