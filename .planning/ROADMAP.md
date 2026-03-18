@@ -30,11 +30,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Unauthenticated users are redirected away from protected routes
   4. Cognee FastAPI health endpoint responds on Cloud Run (europe-west1)
   5. OWL files and content can be stored in and retrieved from Supabase Storage
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
+- [ ] 01-01-PLAN.md — Scaffold Next.js 16 project, Supabase auth, proxy route protection, and login page
+- [ ] 01-02-PLAN.md — Cognee backend Dockerfile, dependencies, and Cloud Run deployment
+- [ ] 01-03-PLAN.md — Dashboard shell with sidebar, health status, Storage bucket, and full integration
 
 ### Phase 2: Ontology Management
 **Goal**: Users can define, visualise, and sync a domain ontology that constrains Cognee's entity extraction
@@ -110,7 +111,7 @@ Note: Phases 2, 3, and 4 all depend on Phase 1 but not on each other. They are o
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Infrastructure | 0/2 | Not started | - |
+| 1. Infrastructure | 0/3 | Planning complete | - |
 | 2. Ontology Management | 0/3 | Not started | - |
 | 3. Data Dictionary | 0/2 | Not started | - |
 | 4. Rules Management | 0/3 | Not started | - |
