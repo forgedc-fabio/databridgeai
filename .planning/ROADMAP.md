@@ -47,9 +47,10 @@ Plans:
   3. User can view a read-only presentation-optimised graph with filter, expand/collapse, search, and PNG/SVG export
   4. User can sync the ontology to Cognee and sees a stale indicator when the ontology has changed since last sync
   5. Ontology data is tenant-scoped and enforced by RLS
-**Plans**: 5 plans
+**Plans**: 6 plans
 
 Plans:
+- [ ] 02-00-PLAN.md — Wave 0: Test scaffold files for Nyquist compliance (9 TypeScript + 2 Python stubs)
 - [ ] 02-01-PLAN.md — Database schema, TypeScript types, shadcn/ui + Cytoscape dependencies, nav enablement
 - [ ] 02-02-PLAN.md — Class List DataTable with CRUD side panel, tab container, empty state, delete confirmation
 - [ ] 02-03-PLAN.md — Relationship Editor DataTable with CRUD dialog, hierarchy validation, inline type creation
@@ -114,7 +115,7 @@ Note: Phases 2, 3, and 4 all depend on Phase 1 but not on each other. They are o
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Infrastructure | 3/3 | Complete   | 2026-03-18 |
-| 2. Ontology Management | 0/5 | Planned | - |
+| 2. Ontology Management | 0/6 | Planned | - |
 | 3. Data Dictionary | 0/2 | Not started | - |
 | 4. Rules Management | 0/3 | Not started | - |
 | 5. Content Ingestion | 0/2 | Not started | - |

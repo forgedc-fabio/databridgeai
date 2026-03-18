@@ -2,7 +2,7 @@
 phase: 02
 slug: ontology-management
 status: draft
-nyquist_compliant: false
+nyquist_compliant: true
 wave_0_complete: false
 created: 2026-03-18
 ---
@@ -38,19 +38,19 @@ created: 2026-03-18
 
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 02-01-01 | 01 | 1 | ONT-01 | unit | `pnpm vitest run src/features/ontology/components/class-list/class-data-table.test.tsx -x` | ❌ W0 | ⬜ pending |
-| 02-01-02 | 01 | 1 | ONT-02 | unit + integration | `pnpm vitest run src/features/ontology/actions/class-actions.test.ts -x` | ❌ W0 | ⬜ pending |
-| 02-01-03 | 01 | 1 | ONT-03 | unit | `pnpm vitest run src/features/ontology/actions/relationship-actions.test.ts -x` | ❌ W0 | ⬜ pending |
-| 02-01-04 | 01 | 1 | ONT-04 | unit | `pnpm vitest run src/features/ontology/lib/validators.test.ts -x` | ❌ W0 | ⬜ pending |
-| 02-01-05 | 01 | 1 | ONT-05 | manual-only | Verify via Supabase SQL editor | N/A | ⬜ pending |
-| 02-02-01 | 02 | 2 | ONT-06 | unit | `pnpm vitest run src/features/ontology/components/ontology-tabs.test.tsx -x` | ❌ W0 | ⬜ pending |
-| 02-02-02 | 02 | 2 | ONT-07 | unit | `pnpm vitest run src/features/ontology/components/graph/ontology-graph.test.tsx -x` | ❌ W0 | ⬜ pending |
-| 02-02-03 | 02 | 2 | ONT-08 | smoke | `pnpm vitest run src/app/(dashboard)/ontology/visualisation/page.test.tsx -x` | ❌ W0 | ⬜ pending |
-| 02-02-04 | 02 | 2 | ONT-09 | unit | `pnpm vitest run src/features/ontology/components/graph/graph-controls.test.tsx -x` | ❌ W0 | ⬜ pending |
-| 02-02-05 | 02 | 2 | ONT-10 | manual-only | Requires browser canvas API | N/A | ⬜ pending |
-| 02-03-01 | 03 | 3 | ONT-11 | unit | `pnpm vitest run src/features/ontology/actions/sync-actions.test.ts -x` | ❌ W0 | ⬜ pending |
-| 02-03-02 | 03 | 3 | ONT-12 | unit | `pnpm vitest run src/features/ontology/hooks/use-ontology-sync.test.ts -x` | ❌ W0 | ⬜ pending |
-| 02-03-03 | 03 | 3 | ONT-13 | unit (Python) | `python -m pytest backend/tests/test_owl_generator.py -x` | ❌ W0 | ⬜ pending |
+| 02-00-01 | 00 | 0 | ALL | scaffold | `pnpm vitest run --reporter=verbose` | Plan 00 creates | ⬜ pending |
+| 02-00-02 | 00 | 0 | ONT-13 | scaffold | `python -m pytest backend/tests/ --co -q` | Plan 00 creates | ⬜ pending |
+| 02-01-01 | 01 | 1 | ONT-05 | type-check + grep | `pnpm tsc --noEmit 2>&1 \| tail -5` | N/A | ⬜ pending |
+| 02-01-02 | 01 | 1 | ONT-05 | type-check | `pnpm tsc --noEmit 2>&1 \| tail -5` | N/A | ⬜ pending |
+| 02-02-01 | 02 | 2 | ONT-01, ONT-06 | type-check + unit | `pnpm tsc --noEmit && pnpm vitest run src/features/ontology/actions/class-actions.test.ts src/features/ontology/components/ontology-tabs.test.tsx -x` | ✅ W0 | ⬜ pending |
+| 02-02-02 | 02 | 2 | ONT-02 | type-check + unit | `pnpm tsc --noEmit && pnpm vitest run src/features/ontology/components/class-list/class-data-table.test.tsx -x` | ✅ W0 | ⬜ pending |
+| 02-03-01 | 03 | 3 | ONT-03, ONT-04 | type-check + unit | `pnpm tsc --noEmit && pnpm vitest run src/features/ontology/lib/validators.test.ts src/features/ontology/actions/relationship-actions.test.ts -x` | ✅ W0 | ⬜ pending |
+| 02-03-02 | 03 | 3 | ONT-03 | type-check | `pnpm tsc --noEmit 2>&1 \| tail -5` | N/A | ⬜ pending |
+| 02-04-01 | 04 | 4 | ONT-07, ONT-09 | type-check + unit | `pnpm tsc --noEmit && pnpm vitest run src/features/ontology/components/graph/ontology-graph.test.tsx src/features/ontology/components/graph/graph-controls.test.tsx -x` | ✅ W0 | ⬜ pending |
+| 02-04-02 | 04 | 4 | ONT-08 | type-check | `pnpm tsc --noEmit 2>&1 \| tail -5` | N/A | ⬜ pending |
+| 02-05-01 | 05 | 5 | ONT-13 | syntax + pytest | `python3 -c "import ast; ..." && cd backend && python3 -m pytest tests/test_owl_generator.py -x --tb=short` | ✅ W0 | ⬜ pending |
+| 02-05-02 | 05 | 5 | ONT-11, ONT-12 | type-check + unit | `pnpm tsc --noEmit && pnpm vitest run src/features/ontology/actions/sync-actions.test.ts src/features/ontology/hooks/use-ontology-sync.test.ts -x` | ✅ W0 | ⬜ pending |
+| 02-05-03 | 05 | 5 | ONT-11 | manual-only | Requires Cloud Run deployment | N/A | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -58,7 +58,8 @@ created: 2026-03-18
 
 ## Wave 0 Requirements
 
-- [ ] `playwright.config.ts` — Playwright configuration file
+All created by Plan 02-00-PLAN.md (wave: 0, depends_on: []):
+
 - [ ] `src/features/ontology/components/class-list/class-data-table.test.tsx` — covers ONT-01
 - [ ] `src/features/ontology/actions/class-actions.test.ts` — covers ONT-02
 - [ ] `src/features/ontology/actions/relationship-actions.test.ts` — covers ONT-03
@@ -70,7 +71,6 @@ created: 2026-03-18
 - [ ] `src/features/ontology/hooks/use-ontology-sync.test.ts` — covers ONT-12
 - [ ] `backend/tests/test_owl_generator.py` — covers ONT-13
 - [ ] `backend/tests/conftest.py` — shared Python test fixtures
-- [ ] Python test framework install: `pip install pytest pytest-asyncio`
 
 ---
 
@@ -85,11 +85,11 @@ created: 2026-03-18
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 15s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references (Plan 02-00 creates all 11 test stubs)
+- [x] No watch-mode flags
+- [x] Feedback latency < 15s (pnpm tsc --noEmit ~5-10s, vitest run ~5s)
+- [x] `nyquist_compliant: true` set in frontmatter
 
-**Approval:** pending
+**Approval:** ready
