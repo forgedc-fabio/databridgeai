@@ -87,12 +87,19 @@ Core stack (Supabase, Cloud Run, Claude, Next.js on Vercel, Python) is firm. Imp
 
 ## Architecture
 
-### Three Platforms
+### Four Platforms
 
 - **Supabase** — Data & control plane (database, auth, file storage, job queue, realtime)
 - **GCP Cloud Run** — Compute (agents, orchestrator)
 - **Vercel** — Frontend hosting (Next.js dashboard)
 - **Anthropic Claude API** — Intelligence (content classification)
+
+### Vercel + Supabase Deployment
+
+Two integrations work together serving different purposes:
+
+- **GitHub → Vercel (deployment):** Vercel watches the GitHub repo and auto-deploys the Next.js app on every push to `main`. Preview deployments are created on pull requests.
+- **Supabase → Vercel (environment sync):** The Supabase Vercel Integration automatically syncs Supabase credentials (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`) into Vercel's environment variables. This eliminates manual key copying and can map different Supabase projects to different Vercel environments (e.g. preview → staging Supabase, production → production Supabase) if needed later.
 
 ### Monorepo Structure
 
