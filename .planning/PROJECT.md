@@ -39,12 +39,12 @@ v1 delivers an automated content intelligence system. Point it at a source of fi
 
 The full platform implements a four-component Omnichannel Data Model:
 
-| Component | Purpose | v1 Status |
-|-----------|---------|-----------|
-| **Content** | Contextual data applied to each content piece using common taxonomy | **In scope** |
-| **Customer** | Unified customer profiles with interaction history, clinical context, behavioural/attitudinal segments | Deferred |
-| **Channel** | Standardised interaction data enabling cross-channel performance comparison | Deferred |
-| **Impact** | Attribution and forecasting combining engagement, cost, and strategic context | Deferred |
+| Component    | Purpose                                                                                                | v1 Status    |
+| ------------ | ------------------------------------------------------------------------------------------------------ | ------------ |
+| **Content**  | Contextual data applied to each content piece using common taxonomy                                    | **In scope** |
+| **Customer** | Unified customer profiles with interaction history, clinical context, behavioural/attitudinal segments | **In scope** |
+| **Channel**  | Standardised interaction data enabling cross-channel performance comparison                            | **In scope** |
+| **Impact**   | Attribution and forecasting combining engagement, cost, and strategic context                          | **In scope** |
 
 v1 schema and architecture are designed to accommodate these components without re-platforming.
 
@@ -52,6 +52,7 @@ v1 schema and architecture are designed to accommodate these components without 
 
 ### v1: ForgeDC Internal Team
 
+- Tom Botting (product owner)
 - Fabio Barboza (technical lead) — building and validating
 - ForgeDC colleagues — testing with real pharma content
 - Goal: prove the classification pipeline works before client deployment
@@ -76,20 +77,21 @@ v1 schema and architecture are designed to accommodate these components without 
 | Container registry | GCP Artifact Registry | Fixed |
 | Secrets | GCP Secret Manager | Fixed |
 | Frontend | Next.js (App Router) + shadcn/ui + Tailwind CSS | Fixed |
-| Frontend hosting | GCP Cloud Run (custom domain, Google-managed SSL) | Open to alternatives |
+| Frontend hosting | Vercel | Fixed |
 | LLM | Anthropic Claude API (claude-sonnet-4) | Fixed |
 | CI/CD | GitHub Actions | Fixed |
 | Language (agents) | Python | Fixed |
 | Validation | Pydantic | Fixed |
 
-Core stack (Supabase, Cloud Run, Claude, Next.js, Python) is firm. Implementation details (job queue mechanism, dispatch patterns, edge function vs alternatives) are open to research-based challenge.
+Core stack (Supabase, Cloud Run, Claude, Next.js on Vercel, Python) is firm. Implementation details (job queue mechanism, dispatch patterns, edge function vs alternatives) are open to research-based challenge.
 
 ## Architecture
 
 ### Three Platforms
 
 - **Supabase** — Data & control plane (database, auth, file storage, job queue, realtime)
-- **GCP Cloud Run** — Compute (agents, orchestrator, frontend hosting)
+- **GCP Cloud Run** — Compute (agents, orchestrator)
+- **Vercel** — Frontend hosting (Next.js dashboard)
 - **Anthropic Claude API** — Intelligence (content classification)
 
 ### Monorepo Structure
@@ -104,8 +106,7 @@ databridgeai/
 │   │   └── ingest/
 │   ├── components/
 │   ├── lib/supabase/
-│   ├── middleware.ts
-│   └── Dockerfile
+│   └── middleware.ts
 ├── agents/             # Python AI agents
 │   ├── source-connector/
 │   ├── orchestrator/
@@ -144,8 +145,8 @@ User triggers run → Edge Function → Source Connector (crawl + detect + queue
 | 4 | Orchestrator | Poll job queue, dispatch to correct agent |
 | 5 | PDF Agent | Fetch rules/taxonomy, classify PDF content via Claude, validate and store |
 | 6 | Edge Function | Authenticated trigger endpoint (fire-and-forget) |
-| 7 | CI/CD | GitHub Actions with Workload Identity Federation |
-| 8 | Frontend | Login, Dashboard, Rules Manager, Ingestion Trigger |
+| 7 | CI/CD | GitHub Actions (agents to GCP), Vercel (frontend auto-deploy) |
+| 8 | Frontend | Login, Dashboard, Rules Manager, Ingestion Trigger, Account Management |
 
 Additional file types (HTML, Image, DOCX, CSV) need import and storage capability but full agent classification is deferred.
 
@@ -160,10 +161,12 @@ Additional file types (HTML, Image, DOCX, CSV) need import and storage capabilit
 
 ### Access Control
 
-| Role | Dashboard | Trigger Runs | Manage Rules | Export Data |
-|------|-----------|-------------|-------------|-------------|
-| Admin | Yes | Yes | Yes | Yes |
-| Viewer | Yes | No | No | Yes |
+| Role | Dashboard | Trigger Runs | Manage Rules | Export Data | Create Accounts |
+|------|-----------|-------------|-------------|-------------|-----------------|
+| Admin | Yes | Yes | Yes | Yes | Yes |
+| Viewer | Yes | No | No | Yes | No |
+
+Account creation is admin-only. Admins can create new user accounts and assign roles via the dashboard.
 
 ## Security Constraints
 
@@ -180,7 +183,8 @@ Additional file types (HTML, Image, DOCX, CSV) need import and storage capabilit
 3. Dashboard showing real-time job status and classification results
 4. Rules and taxonomy updatable without code deployment
 5. ForgeDC team can ingest a batch of test files and query structured results
-6. All infrastructure deployed via CI/CD to GCP
+6. All infrastructure deployed via CI/CD (agents to GCP, frontend to Vercel)
+7. Account creation flow working for admin users
 
 ## Infrastructure
 
@@ -191,10 +195,11 @@ Additional file types (HTML, Image, DOCX, CSV) need import and storage capabilit
 | Supabase Org | Forge DC (`uwyhxwvvzcqywaakvgke`) |
 | GCP Region | europe-west1 |
 | Supabase Region | eu-west-1 |
+| Frontend Hosting | Vercel |
 
 ## Dependencies
 
-- Anthropic Claude API access (claude-sonnet-4)
+- Anthropic Claude API access (claude-opus-4-6)
 - GCP project with Cloud Run, Artifact Registry, Secret Manager enabled
 - Supabase project (exists: databridgeai)
 - GitHub repository (exists: ForgeDC/databridgeai)
