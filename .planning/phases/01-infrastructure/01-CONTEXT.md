@@ -1,3 +1,4 @@
+
 # Phase 1: Infrastructure - Context
 
 **Gathered:** 2026-03-18
@@ -79,7 +80,7 @@ No external specs or ADRs exist for this project — requirements are fully capt
 ### Integration Points
 - Supabase project already provisioned (`vkdcliaocklnlbthwdpx`) — Auth, Postgres, and Storage ready to configure
 - GitHub repo exists at `ForgeDC/databridgeai` — deployment target for Vercel
-- GCP project `forge-dc-mcp-server` — Cloud Run deployment target for Cognee
+- GCP project `forgedc-databridgeai`i — Cloud Run deployment target for Cognee (forgedc-databridgeai)
 
 </code_context>
 

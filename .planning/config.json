@@ -10,7 +10,8 @@
     "plan_check": true,
     "verifier": true,
     "auto_advance": false,
-    "nyquist_validation": true
+    "nyquist_validation": true,
+    "_auto_chain_active": false
   },
   "created_at": "2026-03-18",
   "project": "DataBridgeAI"
