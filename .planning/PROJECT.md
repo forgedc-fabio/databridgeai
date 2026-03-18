@@ -14,11 +14,9 @@ Content uploaded to the system is accurately classified against a user-defined o
 
 ### Validated
 
-(None yet — ship to validate)
+- [x] Deploy infrastructure (Vercel + Supabase + Cloud Run with Cognee) — Validated in Phase 01: Infrastructure
 
 ### Active
-
-- [ ] Deploy infrastructure (Vercel + Supabase + Cloud Run with Cognee)
 - [ ] Ontology editor UI (classes, properties, hierarchies, constraints)
 - [ ] Ontology visualisation (read-only, presentation mode, export)
 - [ ] Ontology sync to Cognee (OWL/RDF generation, stale indicator)
@@ -67,12 +65,12 @@ Content uploaded to the system is accurately classified against a user-defined o
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
 | Cognee for classification (not direct Claude agents) | Knowledge graph + ontology-driven extraction produces governed, consistent results vs raw LLM prompting | -- Pending |
-| Frontend on Vercel | Native Next.js support, preview deployments, Supabase integration | -- Pending |
-| Supabase for data + auth + storage | Unified data plane, RLS, Realtime, Storage for OWL files and content | -- Pending |
-| Cloud Run for Cognee | Scale-to-zero, pay-per-request, europe-west1 | -- Pending |
+| Frontend on Vercel | Native Next.js support, preview deployments, Supabase integration | Validated — Phase 01 |
+| Supabase for data + auth + storage | Unified data plane, RLS, Realtime, Storage for OWL files and content | Validated — Phase 01 |
+| Cloud Run for Cognee | Scale-to-zero, pay-per-request, europe-west1 | Validated — Phase 01 |
 | Ontology as first-class UI concept | Users define and manage the domain model directly, not just flat taxonomy | -- Pending |
 | Structured rules in JSONB (not raw documents) | Enables structured editing, validation, versioning, and Markdown export | -- Pending |
 | react-cytoscapejs for ontology graphs | Supports editable DAG layouts, hierarchical views | -- Pending |
 
 ---
-*Last updated: 2026-03-18 after requirements pivot*
+*Last updated: 2026-03-18 — Phase 01 Infrastructure complete*
