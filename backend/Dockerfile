@@ -9,8 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 COPY pyproject.toml ./
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-dev || uv sync --no-dev
+RUN uv sync --frozen --no-dev --no-install-project || uv sync --no-dev --no-install-project
 
 COPY . .
 

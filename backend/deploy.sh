@@ -9,7 +9,7 @@ set -euo pipefail
 PROJECT_ID="forgedc-databridgeai"
 REGION="europe-west1"
 SERVICE_NAME="databridgeai-cognee"
-IMAGE="gcr.io/${PROJECT_ID}/${SERVICE_NAME}"
+IMAGE="${REGION}-docker.pkg.dev/${PROJECT_ID}/databridgeai/${SERVICE_NAME}"
 
 echo "Building and pushing container image..."
 gcloud builds submit --tag "${IMAGE}" --project "${PROJECT_ID}" ./backend
