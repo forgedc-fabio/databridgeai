@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: unknown
-stopped_at: Completed 02-00-PLAN.md
-last_updated: "2026-03-18T23:27:13.335Z"
+status: executing
+stopped_at: Completed 02-01-PLAN.md
+last_updated: "2026-03-18T23:59:34.558Z"
 progress:
   total_phases: 5
   completed_phases: 1
   total_plans: 9
-  completed_plans: 4
+  completed_plans: 5
 ---
 
 # Project State
@@ -24,15 +24,15 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 ## Current Position
 
 Phase: 02 (ontology-management) — EXECUTING
-Plan: 2 of 6
+Plan: 3 of 6
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 3
-- Average duration: ~55 min
-- Total execution time: ~2.75 hours
+- Total plans completed: 5
+- Average duration: ~45 min
+- Total execution time: ~3.5 hours
 
 **By Phase:**
 
@@ -42,11 +42,15 @@ Plan: 2 of 6
 
 **Recent Trend:**
 
-- Last 5 plans: 01-01 (~90min), 01-02 (~30min), 01-03 (~45min)
+- Last 5 plans: 01-01 (~90min), 01-02 (~30min), 01-03 (~45min), 02-00 (~20min), 02-01 (~25min)
 - Trend: velocity improving as codebase foundation established
 
 *Updated after each plan completion*
-| Phase 02 P00 | 2 | 2 tasks | 12 files |
+
+| Plan | Duration | Tasks | Files |
+|------|----------|-------|-------|
+| Phase 02 P00 | ~20min | 2 tasks | 12 files |
+| Phase 02 P01 | ~25min | 3 tasks | 15 files |
 
 ## Accumulated Context
 
@@ -71,6 +75,9 @@ Recent decisions affecting current work:
 - [01-03]: DashboardContent split into separate client component — page.tsx stays server component for user data fetching
 - [01-03]: proxy.ts renamed to middleware.ts for Next.js file convention compatibility
 - [Phase 02-00]: pytest + pytest-asyncio installed in backend/.venv for isolated Python test environment
+- [02-01]: Fixed tenant ID (00000000-0000-0000-0000-000000000001) for single-tenant v1, multi-tenant schema ready for v2
+- [02-01]: RLS tenant isolation via get_user_tenant_id() function — all ontology tables enforce tenant_id match
+- [02-01]: System relationship types (is-a, has-part, related-to, depends-on) seeded as immutable defaults (is_system=true)
 
 ### Pending Todos
 
@@ -82,6 +89,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-18T23:27:13.332Z
-Stopped at: Completed 02-00-PLAN.md
+Last session: 2026-03-18T23:58:10Z
+Stopped at: Completed 02-01-PLAN.md
 Resume file: None

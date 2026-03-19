@@ -20,7 +20,7 @@
 - [x] **ONT-02**: User can create, edit, and delete ontology classes with properties
 - [x] **ONT-03**: User can define relationships between classes via form with dropdowns
 - [x] **ONT-04**: User can define hierarchies and constraints between classes
-- [ ] **ONT-05**: Ontology data is tenant-scoped (tenant_id) with RLS
+- [x] **ONT-05**: Ontology data is tenant-scoped (tenant_id) with RLS
 - [x] **ONT-06**: Ontology editor has three views: Class List, Relationship Editor, Visual Graph
 - [x] **ONT-07**: Visual graph uses Cytoscape.js with hierarchical/DAG layout
 - [ ] **ONT-08**: User can view read-only presentation-optimised ontology visualisation
@@ -108,7 +108,7 @@
 | ONT-02 | Phase 2 | Complete |
 | ONT-03 | Phase 2 | Complete |
 | ONT-04 | Phase 2 | Complete |
-| ONT-05 | Phase 2 | Pending |
+| ONT-05 | Phase 2 | Complete |
 | ONT-06 | Phase 2 | Complete |
 | ONT-07 | Phase 2 | Complete |
 | ONT-08 | Phase 2 | Pending |

@@ -115,7 +115,7 @@ Note: Phases 2, 3, and 4 all depend on Phase 1 but not on each other. They are o
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Infrastructure | 3/3 | Complete   | 2026-03-18 |
-| 2. Ontology Management | 0/6 | Planned | - |
+| 2. Ontology Management | 2/6 | In Progress|  |
 | 3. Data Dictionary | 0/2 | Not started | - |
 | 4. Rules Management | 0/3 | Not started | - |
 | 5. Content Ingestion | 0/2 | Not started | - |
