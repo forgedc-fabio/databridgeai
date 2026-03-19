@@ -13,7 +13,7 @@ DataBridge AI delivers a content intelligence platform for pharmaceutical commer
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Infrastructure** - Deploy Vercel + Supabase + Cloud Run with Cognee, auth, and protected routes (completed 2026-03-18)
-- [ ] **Phase 2: Ontology Management** - Ontology editor UI with class/relationship CRUD, graph visualisation, and Cognee sync
+- [x] **Phase 2: Ontology Management** - Ontology editor UI with class/relationship CRUD, graph visualisation, and Cognee sync (completed 2026-03-19)
 - [ ] **Phase 3: Data Dictionary** - Taxonomy field management with category grouping, versioning, and graph/tree visualisation
 - [ ] **Phase 4: Rules Management** - L0-L4 classification rules editor with structured forms, versioning, and hierarchy visualisation
 - [ ] **Phase 5: Content Ingestion** - File upload pipeline with drag-and-drop, signed URLs, status tracking, and Cognee processing
@@ -50,12 +50,12 @@ Plans:
 **Plans**: 6 plans
 
 Plans:
-- [ ] 02-00-PLAN.md — Wave 0: Test scaffold files for Nyquist compliance (9 TypeScript + 2 Python stubs)
-- [ ] 02-01-PLAN.md — Database schema, TypeScript types, shadcn/ui + Cytoscape dependencies, nav enablement
-- [ ] 02-02-PLAN.md — Class List DataTable with CRUD side panel, tab container, empty state, delete confirmation
-- [ ] 02-03-PLAN.md — Relationship Editor DataTable with CRUD dialog, hierarchy validation, inline type creation
-- [ ] 02-04-PLAN.md — Cytoscape graph visualisation, presentation view, filter/search/export controls
-- [ ] 02-05-PLAN.md — Cognee sync pipeline: OWL generation on Cloud Run, sync button, stale indicator
+- [x] 02-00-PLAN.md — Wave 0: Test scaffold files for Nyquist compliance (9 TypeScript + 2 Python stubs)
+- [x] 02-01-PLAN.md — Database schema, TypeScript types, shadcn/ui + Cytoscape dependencies, nav enablement
+- [x] 02-02-PLAN.md — Class List DataTable with CRUD side panel, tab container, empty state, delete confirmation
+- [x] 02-03-PLAN.md — Relationship Editor DataTable with CRUD dialog, hierarchy validation, inline type creation
+- [x] 02-04-PLAN.md — Cytoscape graph visualisation, presentation view, filter/search/export controls
+- [x] 02-05-PLAN.md — Cognee sync pipeline: OWL generation on Cloud Run, sync button, stale indicator
 
 ### Phase 3: Data Dictionary
 **Goal**: Users can manage a versioned taxonomy of 45+ fields across 7 categories with visual exploration
@@ -115,7 +115,7 @@ Note: Phases 2, 3, and 4 all depend on Phase 1 but not on each other. They are o
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Infrastructure | 3/3 | Complete   | 2026-03-18 |
-| 2. Ontology Management | 3/6 | In Progress|  |
+| 2. Ontology Management | 6/6 | Complete   | 2026-03-19 |
 | 3. Data Dictionary | 0/2 | Not started | - |
 | 4. Rules Management | 0/3 | Not started | - |
 | 5. Content Ingestion | 0/2 | Not started | - |
