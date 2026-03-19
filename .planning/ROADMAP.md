@@ -69,8 +69,8 @@ Plans:
 **Plans**: 5 plans
 
 Plans:
-- [ ] 03-00-PLAN.md — Wave 0: Test scaffold files for Nyquist compliance (12 TypeScript stubs)
-- [ ] 03-01-PLAN.md — Database schema (7 tables), TypeScript types, dependencies (react-force-graph-2d, dnd-kit, papaparse), nav enablement
+- [x] 03-00-PLAN.md — Wave 0: Test scaffold files for Nyquist compliance (12 TypeScript stubs)
+- [x] 03-01-PLAN.md — Database schema (7 tables), TypeScript types, dependencies (react-force-graph-2d, dnd-kit, papaparse), nav enablement
 - [ ] 03-02-PLAN.md — Domains tab (CRUD + drag-to-reorder) and Fields tab (grouped DataTable + conditional side panel form)
 - [ ] 03-03-PLAN.md — Nested dialogs (picklist values, concatenated fields, match table CSV) and versioning (publish, browse, diff)
 - [ ] 03-04-PLAN.md — Force graph visualisation, tree view, graph/tree toggle, presentation view at /dictionary/visualisation
@@ -119,6 +119,6 @@ Note: Phases 2, 3, and 4 all depend on Phase 1 but not on each other. They are o
 |-------|----------------|--------|-----------|
 | 1. Infrastructure | 3/3 | Complete   | 2026-03-18 |
 | 2. Ontology Management | 6/6 | Complete   | 2026-03-19 |
-| 3. Data Dictionary | 0/5 | Not started | - |
+| 3. Data Dictionary | 2/5 | In Progress|  |
 | 4. Rules Management | 0/3 | Not started | - |
 | 5. Content Ingestion | 0/2 | Not started | - |
