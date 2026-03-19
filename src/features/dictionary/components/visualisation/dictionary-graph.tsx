@@ -31,6 +31,11 @@ interface DictionaryGraphProps {
   onNodeClick?: (node: GraphNode) => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- react-force-graph-2d dynamic import strips generics
+type AnyNode = any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyLink = any;
+
 export const DictionaryGraph = forwardRef<
   DictionaryGraphHandle,
   DictionaryGraphProps
@@ -75,13 +80,14 @@ export const DictionaryGraph = forwardRef<
 
   // Node hover -- highlight connected nodes
   const handleNodeHover = useCallback(
-    (node: GraphNode | null) => {
-      if (!node) {
+    (rawNode: AnyNode) => {
+      if (!rawNode) {
         setHighlightNodes(new Set());
         setHoveredNode(null);
         return;
       }
 
+      const node = rawNode as GraphNode;
       const connectedIds = new Set<string>();
       connectedIds.add(node.id);
 
@@ -111,12 +117,13 @@ export const DictionaryGraph = forwardRef<
   // Custom node rendering
   const handleNodeCanvasObject = useCallback(
     (
-      node: GraphNode,
+      rawNode: AnyNode,
       ctx: CanvasRenderingContext2D,
       globalScale: number
     ) => {
-      const x = (node as GraphNode & { x?: number }).x ?? 0;
-      const y = (node as GraphNode & { y?: number }).y ?? 0;
+      const node = rawNode as GraphNode & { x?: number; y?: number };
+      const x = node.x ?? 0;
+      const y = node.y ?? 0;
 
       // Calculate opacity based on hover state
       const isHighlighted =
@@ -167,12 +174,13 @@ export const DictionaryGraph = forwardRef<
   // Node pointer area (for hit detection matching the custom render)
   const handleNodePointerAreaPaint = useCallback(
     (
-      node: GraphNode,
+      rawNode: AnyNode,
       colour: string,
       ctx: CanvasRenderingContext2D
     ) => {
-      const x = (node as GraphNode & { x?: number }).x ?? 0;
-      const y = (node as GraphNode & { y?: number }).y ?? 0;
+      const node = rawNode as GraphNode & { x?: number; y?: number };
+      const x = node.x ?? 0;
+      const y = node.y ?? 0;
       const radius =
         node.type === "domain"
           ? Math.sqrt(node.val) * 2
@@ -198,15 +206,17 @@ export const DictionaryGraph = forwardRef<
         nodeCanvasObject={handleNodeCanvasObject}
         nodeCanvasObjectMode={() => "replace"}
         nodePointerAreaPaint={handleNodePointerAreaPaint}
-        linkColor={(link: { type?: string }) =>
+        linkColor={(link: AnyLink) =>
           link.type === "concatenated" ? "#94a3b8" : "#d1d5db"
         }
-        linkLineDash={(link: { type?: string }) =>
+        linkLineDash={(link: AnyLink) =>
           link.type === "concatenated" ? [5, 5] : null
         }
         linkDirectionalArrowLength={4}
         onNodeHover={handleNodeHover}
-        onNodeClick={(node: GraphNode) => onNodeClick?.(node)}
+        onNodeClick={(rawNode: AnyNode) =>
+          onNodeClick?.(rawNode as GraphNode)
+        }
         width={containerWidth}
         height={height}
         cooldownTicks={100}

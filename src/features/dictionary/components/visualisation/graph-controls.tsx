@@ -47,7 +47,7 @@ export function GraphControls({
   }, [fields, searchQuery]);
 
   const handleDomainChange = React.useCallback(
-    (value: string) => {
+    (value: string | null) => {
       onDomainFilter(!value || value === "all" ? null : value);
     },
     [onDomainFilter]
