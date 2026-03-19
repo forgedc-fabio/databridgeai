@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getCogneeIdToken } from "@/lib/google-auth";
 
 const COGNEE_URL = process.env.COGNEE_API_URL;
 
@@ -11,7 +12,9 @@ export async function GET() {
   }
 
   try {
+    const idToken = await getCogneeIdToken();
     const res = await fetch(`${COGNEE_URL}/health`, {
+      headers: { Authorization: `Bearer ${idToken}` },
       signal: AbortSignal.timeout(5000),
     });
     if (res.ok) {

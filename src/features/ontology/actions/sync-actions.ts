@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { getCogneeIdToken } from "@/lib/google-auth";
 import type { OntologySyncStatus } from "../types/ontology";
 
 /**
@@ -100,9 +101,14 @@ export async function syncOntologyToCognee(): Promise<
   };
 
   try {
+    const idToken = await getCogneeIdToken();
+
     const response = await fetch(`${cogneeApiUrl}/ontology/sync`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${idToken}`,
+      },
       body: JSON.stringify(syncRequest),
       signal: AbortSignal.timeout(30000),
     });
