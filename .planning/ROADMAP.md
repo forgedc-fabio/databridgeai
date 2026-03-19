@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Infrastructure** - Deploy Vercel + Supabase + Cloud Run with Cognee, auth, and protected routes (completed 2026-03-18)
 - [x] **Phase 2: Ontology Management** - Ontology editor UI with class/relationship CRUD, graph visualisation, and Cognee sync (completed 2026-03-19)
-- [ ] **Phase 3: Data Dictionary** - Taxonomy field management with category grouping, versioning, and graph/tree visualisation
+- [ ] **Phase 3: Data Dictionary** - Taxonomy field management with domain grouping, versioning, and graph/tree visualisation
 - [ ] **Phase 4: Rules Management** - L0-L4 classification rules editor with structured forms, versioning, and hierarchy visualisation
 - [ ] **Phase 5: Content Ingestion** - File upload pipeline with drag-and-drop, signed URLs, status tracking, and Cognee processing
 
@@ -58,19 +58,22 @@ Plans:
 - [x] 02-05-PLAN.md — Cognee sync pipeline: OWL generation on Cloud Run, sync button, stale indicator
 
 ### Phase 3: Data Dictionary
-**Goal**: Users can manage a versioned taxonomy of 45+ fields across 7 categories with visual exploration
+**Goal**: Users can manage a versioned data dictionary of taxonomy fields grouped by domains, with conditional editing, picklist/concatenated value management, match table CSV upload, and visual exploration via force graph and tree views
 **Depends on**: Phase 1
 **Requirements**: DD-01, DD-02, DD-03, DD-04, DD-05, DD-06, DD-07, DD-08, DD-09
 **Success Criteria** (what must be TRUE):
-  1. User can view taxonomy fields grouped by 7 categories in an expandable DataTable, seeded from TaxonomyDataDic.json
-  2. User can add, edit, and delete fields with a conditional form that adapts to value_type, and can manage categories
-  3. User can view a colour-coded force-graph of categories, fields, and hierarchies, and switch to a table/tree view
-  4. User can create and browse dictionary versions
-**Plans**: TBD
+  1. User can view taxonomy fields grouped by domains in an expandable DataTable with collapsible domain sections
+  2. User can add, edit, and delete fields with a conditional form that adapts to value_type, and can manage domains with drag-to-reorder
+  3. User can view a colour-coded force-graph of domains and fields, and switch to an expandable tree view
+  4. User can publish, browse, and compare dictionary versions with side-by-side diff
+**Plans**: 5 plans
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
+- [ ] 03-00-PLAN.md — Wave 0: Test scaffold files for Nyquist compliance (12 TypeScript stubs)
+- [ ] 03-01-PLAN.md — Database schema (7 tables), TypeScript types, dependencies (react-force-graph-2d, dnd-kit, papaparse), nav enablement
+- [ ] 03-02-PLAN.md — Domains tab (CRUD + drag-to-reorder) and Fields tab (grouped DataTable + conditional side panel form)
+- [ ] 03-03-PLAN.md — Nested dialogs (picklist values, concatenated fields, match table CSV) and versioning (publish, browse, diff)
+- [ ] 03-04-PLAN.md — Force graph visualisation, tree view, graph/tree toggle, presentation view at /dictionary/visualisation
 
 ### Phase 4: Rules Management
 **Goal**: Users can author, version, and visualise structured classification rules that drive Cognee's content processing
@@ -108,7 +111,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 Note: Phases 2, 3, and 4 all depend on Phase 1 but not on each other. They are ordered by architectural priority (ontology establishes Cognee sync patterns used by later phases) but could theoretically be reordered.
 
@@ -116,6 +119,6 @@ Note: Phases 2, 3, and 4 all depend on Phase 1 but not on each other. They are o
 |-------|----------------|--------|-----------|
 | 1. Infrastructure | 3/3 | Complete   | 2026-03-18 |
 | 2. Ontology Management | 6/6 | Complete   | 2026-03-19 |
-| 3. Data Dictionary | 0/2 | Not started | - |
+| 3. Data Dictionary | 0/5 | Not started | - |
 | 4. Rules Management | 0/3 | Not started | - |
 | 5. Content Ingestion | 0/2 | Not started | - |
