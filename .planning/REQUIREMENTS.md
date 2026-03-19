@@ -32,15 +32,15 @@
 
 ### Data Dictionary
 
-- [ ] **DD-01**: User can view 45+ taxonomy fields grouped by 7 categories in expandable DataTable
-- [ ] **DD-02**: User can add, edit, and delete dictionary fields (field_name, label, definition, value_type, enum values, governance, tagging method)
-- [ ] **DD-03**: Edit form is conditional on value_type
-- [ ] **DD-04**: User can manage categories (add, rename, reorder)
-- [ ] **DD-05**: Data dictionary supports versioning
+- [x] **DD-01**: User can view 45+ taxonomy fields grouped by 7 categories in expandable DataTable
+- [x] **DD-02**: User can add, edit, and delete dictionary fields (field_name, label, definition, value_type, enum values, governance, tagging method)
+- [x] **DD-03**: Edit form is conditional on value_type
+- [x] **DD-04**: User can manage categories (add, rename, reorder)
+- [x] **DD-05**: Data dictionary supports versioning
 - [ ] **DD-06**: Seed data loaded from TaxonomyDataDic.json
-- [ ] **DD-07**: User can view visual graph of categories, fields, and parent-child hierarchies
-- [ ] **DD-08**: Graph uses react-force-graph with colour-coded nodes by value_type
-- [ ] **DD-09**: Alternative table/tree view available alongside graph
+- [x] **DD-07**: User can view visual graph of categories, fields, and parent-child hierarchies
+- [x] **DD-08**: Graph uses react-force-graph with colour-coded nodes by value_type
+- [x] **DD-09**: Alternative table/tree view available alongside graph
 
 ### Rules Management
 
@@ -117,15 +117,15 @@
 | ONT-11 | Phase 2 | Complete |
 | ONT-12 | Phase 2 | Complete |
 | ONT-13 | Phase 2 | Complete |
-| DD-01 | Phase 3 | Pending |
-| DD-02 | Phase 3 | Pending |
-| DD-03 | Phase 3 | Pending |
-| DD-04 | Phase 3 | Pending |
-| DD-05 | Phase 3 | Pending |
+| DD-01 | Phase 3 | Complete |
+| DD-02 | Phase 3 | Complete |
+| DD-03 | Phase 3 | Complete |
+| DD-04 | Phase 3 | Complete |
+| DD-05 | Phase 3 | Complete |
 | DD-06 | Phase 3 | Pending |
-| DD-07 | Phase 3 | Pending |
-| DD-08 | Phase 3 | Pending |
-| DD-09 | Phase 3 | Pending |
+| DD-07 | Phase 3 | Complete |
+| DD-08 | Phase 3 | Complete |
+| DD-09 | Phase 3 | Complete |
 | RULES-01 | Phase 4 | Pending |
 | RULES-02 | Phase 4 | Pending |
 | RULES-03 | Phase 4 | Pending |
