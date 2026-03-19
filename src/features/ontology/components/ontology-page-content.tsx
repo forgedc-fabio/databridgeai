@@ -10,13 +10,29 @@ import { ClassDataTable } from "./class-list/class-data-table";
 import { ClassFormPanel } from "./class-list/class-form-panel";
 import { ClassEmptyState } from "./class-list/class-empty-state";
 import { DeleteClassDialog } from "./delete-class-dialog";
+import { RelationshipDataTable } from "./relationships/relationship-data-table";
+import { RelationshipForm } from "./relationships/relationship-form";
+import { DeleteRelationshipDialog } from "./relationships/delete-relationship-dialog";
 import {
   createOntologyClass,
   updateOntologyClass,
   deleteOntologyClass,
   getRelationshipCountForClass,
 } from "../actions/class-actions";
-import type { OntologyClass, OntologyClassInput } from "../types/ontology";
+import {
+  getOntologyRelationships,
+  getRelationshipTypes,
+  createOntologyRelationship,
+  deleteOntologyRelationship,
+  createRelationshipType,
+} from "../actions/relationship-actions";
+import type {
+  OntologyClass,
+  OntologyClassInput,
+  OntologyRelationshipWithNames,
+  OntologyRelationshipType,
+  OntologyRelationshipInput,
+} from "../types/ontology";
 
 interface OntologyPageContentProps {
   classes: OntologyClass[];
@@ -25,16 +41,52 @@ interface OntologyPageContentProps {
 export function OntologyPageContent({ classes }: OntologyPageContentProps) {
   const router = useRouter();
 
+  // Active tab tracking
+  const [activeTab, setActiveTab] = React.useState<string>("classes");
+
+  // --- Class state ---
   const [isFormOpen, setIsFormOpen] = React.useState(false);
   const [editingClass, setEditingClass] = React.useState<OntologyClass | null>(
     null
   );
-
   const [isDeleteOpen, setIsDeleteOpen] = React.useState(false);
   const [deletingClass, setDeletingClass] =
     React.useState<OntologyClass | null>(null);
   const [relationshipCount, setRelationshipCount] = React.useState(0);
 
+  // --- Relationship state ---
+  const [relationships, setRelationships] = React.useState<
+    OntologyRelationshipWithNames[]
+  >([]);
+  const [relationshipTypes, setRelationshipTypes] = React.useState<
+    OntologyRelationshipType[]
+  >([]);
+  const [isRelFormOpen, setIsRelFormOpen] = React.useState(false);
+  const [isDeleteRelOpen, setIsDeleteRelOpen] = React.useState(false);
+  const [deletingRelationship, setDeletingRelationship] =
+    React.useState<OntologyRelationshipWithNames | null>(null);
+
+  // --- Data fetching ---
+  const fetchRelationshipData = React.useCallback(async () => {
+    const [relResult, typeResult] = await Promise.all([
+      getOntologyRelationships(),
+      getRelationshipTypes(),
+    ]);
+
+    if (relResult.data) {
+      setRelationships(relResult.data);
+    }
+    if (typeResult.data) {
+      setRelationshipTypes(typeResult.data);
+    }
+  }, []);
+
+  // Fetch relationship data on mount
+  React.useEffect(() => {
+    fetchRelationshipData();
+  }, [fetchRelationshipData]);
+
+  // --- Class handlers ---
   const handleCreateClick = () => {
     setEditingClass(null);
     setIsFormOpen(true);
@@ -63,6 +115,7 @@ export function OntologyPageContent({ classes }: OntologyPageContentProps) {
       }
       toast.success(`Class "${input.name}" updated.`);
       router.refresh();
+      await fetchRelationshipData();
       return {};
     } else {
       const result = await createOntologyClass(input);
@@ -93,8 +146,64 @@ export function OntologyPageContent({ classes }: OntologyPageContentProps) {
       }.`
     );
     router.refresh();
+    await fetchRelationshipData();
   };
 
+  // --- Relationship handlers ---
+  const handleAddRelationshipClick = () => {
+    setIsRelFormOpen(true);
+  };
+
+  const handleRelationshipSave = async (
+    input: OntologyRelationshipInput
+  ): Promise<{ error?: string }> => {
+    const result = await createOntologyRelationship(input);
+    if (result.error) {
+      toast.error(result.error);
+      return { error: result.error };
+    }
+    toast.success("Relationship created.");
+    await fetchRelationshipData();
+    router.refresh();
+    return {};
+  };
+
+  const handleRelationshipDeleteClick = (
+    rel: OntologyRelationshipWithNames
+  ) => {
+    setDeletingRelationship(rel);
+    setIsDeleteRelOpen(true);
+  };
+
+  const handleRelationshipDeleteConfirm = async () => {
+    if (!deletingRelationship) return;
+
+    const result = await deleteOntologyRelationship(deletingRelationship.id);
+    if (result.error) {
+      toast.error(result.error);
+      return;
+    }
+
+    toast.success("Relationship deleted.");
+    await fetchRelationshipData();
+    router.refresh();
+  };
+
+  const handleCreateRelationType = async (name: string) => {
+    const result = await createRelationshipType(name);
+    if (result.error) {
+      toast.error(result.error);
+      return;
+    }
+    toast.success(`Relationship type "${name}" created.`);
+    await fetchRelationshipData();
+  };
+
+  const handleTabChange = React.useCallback((tab: string) => {
+    setActiveTab(tab);
+  }, []);
+
+  // --- Content ---
   const classesContent =
     classes.length === 0 ? (
       <ClassEmptyState onCreateClick={handleCreateClick} />
@@ -108,9 +217,12 @@ export function OntologyPageContent({ classes }: OntologyPageContentProps) {
     );
 
   const relationshipsContent = (
-    <p className="text-muted-foreground p-8">
-      Relationship editor &mdash; coming in the next plan.
-    </p>
+    <RelationshipDataTable
+      data={relationships}
+      classes={classes}
+      relationshipTypes={relationshipTypes}
+      onDelete={handleRelationshipDeleteClick}
+    />
   );
 
   const graphContent = (
@@ -129,10 +241,18 @@ export function OntologyPageContent({ classes }: OntologyPageContentProps) {
           <Button variant="outline" disabled title="Sync to Cognee">
             Sync to Cognee
           </Button>
-          <Button onClick={handleCreateClick}>
-            <Plus className="mr-2 h-4 w-4" />
-            Create Class
-          </Button>
+          {activeTab === "classes" && (
+            <Button onClick={handleCreateClick}>
+              <Plus className="mr-2 h-4 w-4" />
+              Create Class
+            </Button>
+          )}
+          {activeTab === "relationships" && (
+            <Button onClick={handleAddRelationshipClick}>
+              <Plus className="mr-2 h-4 w-4" />
+              Add Relationship
+            </Button>
+          )}
         </div>
       </div>
 
@@ -140,8 +260,11 @@ export function OntologyPageContent({ classes }: OntologyPageContentProps) {
         classesContent={classesContent}
         relationshipsContent={relationshipsContent}
         graphContent={graphContent}
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
       />
 
+      {/* Class form panel */}
       <ClassFormPanel
         open={isFormOpen}
         onOpenChange={setIsFormOpen}
@@ -149,12 +272,31 @@ export function OntologyPageContent({ classes }: OntologyPageContentProps) {
         onSave={handleSave}
       />
 
+      {/* Class delete dialog */}
       <DeleteClassDialog
         open={isDeleteOpen}
         onOpenChange={setIsDeleteOpen}
         className_={deletingClass?.name ?? ""}
         relationshipCount={relationshipCount}
         onConfirm={handleDeleteConfirm}
+      />
+
+      {/* Relationship form dialog */}
+      <RelationshipForm
+        open={isRelFormOpen}
+        onOpenChange={setIsRelFormOpen}
+        classes={classes}
+        relationshipTypes={relationshipTypes}
+        onSave={handleRelationshipSave}
+        onCreateType={handleCreateRelationType}
+      />
+
+      {/* Relationship delete dialog */}
+      <DeleteRelationshipDialog
+        open={isDeleteRelOpen}
+        onOpenChange={setIsDeleteRelOpen}
+        relationship={deletingRelationship}
+        onConfirm={handleRelationshipDeleteConfirm}
       />
     </div>
   );
