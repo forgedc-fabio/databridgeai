@@ -13,6 +13,11 @@ import { DeleteClassDialog } from "./delete-class-dialog";
 import { RelationshipDataTable } from "./relationships/relationship-data-table";
 import { RelationshipForm } from "./relationships/relationship-form";
 import { DeleteRelationshipDialog } from "./relationships/delete-relationship-dialog";
+import { OntologyGraph } from "./graph/ontology-graph";
+import { GraphControls } from "./graph/graph-controls";
+import { GraphExport } from "./graph/graph-export";
+import { useGraphData } from "../hooks/use-graph-data";
+import type { Core } from "cytoscape";
 import {
   createOntologyClass,
   updateOntologyClass,
@@ -65,6 +70,40 @@ export function OntologyPageContent({ classes }: OntologyPageContentProps) {
   const [isDeleteRelOpen, setIsDeleteRelOpen] = React.useState(false);
   const [deletingRelationship, setDeletingRelationship] =
     React.useState<OntologyRelationshipWithNames | null>(null);
+
+  // --- Graph state ---
+  const cyRef = React.useRef<Core | null>(null);
+  const [domainFilter, setDomainFilter] = React.useState<string | null>(null);
+
+  // Transform data to Cytoscape elements
+  const allElements = useGraphData(classes, relationships);
+
+  // Filter elements by domain group
+  const filteredElements = React.useMemo(() => {
+    if (!domainFilter) return allElements;
+
+    const visibleNodeIds = new Set<string>();
+    const filtered = allElements.filter((el) => {
+      if (el.data && !("source" in el.data)) {
+        // Node element
+        const matches = el.data.domainGroup === domainFilter;
+        if (matches) visibleNodeIds.add(el.data.id as string);
+        return matches;
+      }
+      return true; // Keep edges for now
+    });
+
+    // Filter edges to only include those between visible nodes
+    return filtered.filter((el) => {
+      if (el.data && "source" in el.data) {
+        return (
+          visibleNodeIds.has(el.data.source as string) &&
+          visibleNodeIds.has(el.data.target as string)
+        );
+      }
+      return true;
+    });
+  }, [allElements, domainFilter]);
 
   // --- Data fetching ---
   const fetchRelationshipData = React.useCallback(async () => {
@@ -203,6 +242,35 @@ export function OntologyPageContent({ classes }: OntologyPageContentProps) {
     setActiveTab(tab);
   }, []);
 
+  // --- Graph handlers ---
+  const handleSearch = React.useCallback(
+    (classId: string | null) => {
+      if (!classId || !cyRef.current) return;
+      const cy = cyRef.current;
+      const node = cy.getElementById(classId);
+      if (node.length > 0) {
+        cy.animate({
+          fit: { eles: node, padding: 100 },
+          duration: 300,
+        });
+      }
+    },
+    []
+  );
+
+  const handleGraphNodeClick = React.useCallback(
+    (nodeId: string) => {
+      // Switch to Classes tab and open the edit panel for that class
+      const cls = classes.find((c) => c.id === nodeId);
+      if (cls) {
+        setActiveTab("classes");
+        setEditingClass(cls);
+        setIsFormOpen(true);
+      }
+    },
+    [classes]
+  );
+
   // --- Content ---
   const classesContent =
     classes.length === 0 ? (
@@ -226,9 +294,24 @@ export function OntologyPageContent({ classes }: OntologyPageContentProps) {
   );
 
   const graphContent = (
-    <p className="text-muted-foreground p-8">
-      Graph visualisation &mdash; coming in a future plan.
-    </p>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <GraphControls
+          cyRef={cyRef}
+          classes={classes}
+          onDomainFilter={setDomainFilter}
+          onSearch={handleSearch}
+        />
+        <GraphExport cyRef={cyRef} />
+      </div>
+      <div className="h-[600px] border rounded-lg">
+        <OntologyGraph
+          ref={cyRef}
+          elements={filteredElements}
+          onNodeClick={handleGraphNodeClick}
+        />
+      </div>
+    </div>
   );
 
   return (
