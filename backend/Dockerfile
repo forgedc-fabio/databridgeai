@@ -1,6 +1,5 @@
 # backend/Dockerfile
-# Derived from: https://github.com/topoteretes/cognee/blob/main/Dockerfile
-FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS builder
+FROM python:3.12-slim-bookworm
 
 WORKDIR /app
 
@@ -9,23 +8,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 COPY pyproject.toml ./
-RUN uv sync --frozen --no-dev --no-install-project || uv sync --no-dev --no-install-project
+RUN pip install --no-cache-dir \
+    "cognee>=0.5.5,<0.6.0" \
+    "rdflib>=7.0.0,<8.0.0" \
+    "supabase>=2.0.0" \
+    "uvicorn[standard]>=0.30.0" \
+    "fastapi>=0.115.0"
 
 COPY . .
 
-FROM python:3.12-slim-bookworm
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libpq5 && \
-    rm -rf /var/lib/apt/lists/*
-
-COPY --from=builder /app /app
-WORKDIR /app
-
-ENV PATH="/app/.venv/bin:$PATH"
 ENV PYTHONPATH="/app"
 ENV PYTHONUNBUFFERED=1
 
-# Cloud Run injects PORT env var; default to 8000 for local dev
-# Use main:app to serve our custom FastAPI app (wraps Cognee routes + OWL sync endpoint)
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
