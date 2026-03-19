@@ -139,7 +139,7 @@ export function ConcatenatedFieldsDialog({
               </span>
               <Select
                 value={ref.referencedFieldId || undefined}
-                onValueChange={(val) => updateRef(index, val)}
+                onValueChange={(val) => { if (val) updateRef(index, val); }}
               >
                 <SelectTrigger className="flex-1 h-8 text-sm">
                   <SelectValue placeholder="Select a field..." />

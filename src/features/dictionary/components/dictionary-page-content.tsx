@@ -14,6 +14,11 @@ import { FieldDataTable } from "./fields/field-data-table";
 import { FieldFormPanel } from "./fields/field-form-panel";
 import { FieldEmptyState } from "./fields/field-empty-state";
 import { DeleteFieldDialog } from "./fields/delete-field-dialog";
+import { VersionDropdown } from "./versioning/version-dropdown";
+import { VersionBanner } from "./versioning/version-banner";
+import { PublishVersionDialog } from "./versioning/publish-version-dialog";
+import { DiffViewDialog } from "./versioning/diff-view-dialog";
+import { useDictionaryVersion } from "../hooks/use-dictionary-version";
 import {
   createDictionaryDomain,
   updateDictionaryDomain,
@@ -27,6 +32,7 @@ import {
   deleteDictionaryField,
   checkMatchTableExists,
 } from "../actions/field-actions";
+import { publishDictionaryVersion } from "../actions/version-actions";
 import type {
   DictionaryDomain,
   DictionaryDomainInput,
@@ -35,21 +41,45 @@ import type {
   DictionaryVersion,
 } from "../types/dictionary";
 
+type VersionSummary = Pick<
+  DictionaryVersion,
+  "id" | "version_number" | "label" | "published_at"
+>;
+
 interface DictionaryPageContentProps {
   domains: DictionaryDomain[];
   fields: DictionaryFieldWithDomains[];
-  versions: DictionaryVersion[];
+  versions: VersionSummary[];
 }
 
 export function DictionaryPageContent({
   domains,
   fields,
-  versions,
+  versions: initialVersions,
 }: DictionaryPageContentProps) {
   const router = useRouter();
 
   // Active tab tracking
   const [activeTab, setActiveTab] = React.useState<string>("fields");
+
+  // --- Versioning state ---
+  const {
+    versions,
+    viewingVersionId,
+    viewingSnapshot,
+    isReadOnly,
+    viewVersion,
+    switchToDraft,
+    refreshVersions,
+  } = useDictionaryVersion(initialVersions);
+
+  const [isPublishDialogOpen, setIsPublishDialogOpen] = React.useState(false);
+  const [isDiffDialogOpen, setIsDiffDialogOpen] = React.useState(false);
+
+  // Get the current version info for banner
+  const currentViewingVersion = viewingVersionId
+    ? versions.find((v) => v.id === viewingVersionId)
+    : null;
 
   // --- Field state ---
   const [isFieldFormOpen, setIsFieldFormOpen] = React.useState(false);
@@ -85,14 +115,28 @@ export function DictionaryPageContent({
     setActiveTab(tab);
   }, []);
 
+  // --- Version handlers ---
+  const handlePublish = async (label?: string) => {
+    const result = await publishDictionaryVersion(label);
+    if (result.error) {
+      toast.error(result.error);
+      return;
+    }
+    toast.success(`Version v${result.data?.versionNumber} published.`);
+    await refreshVersions();
+    router.refresh();
+  };
+
   // --- Field handlers ---
   const handleCreateFieldClick = () => {
+    if (isReadOnly) return;
     setEditingField(null);
     setMatchTableExists(false);
     setIsFieldFormOpen(true);
   };
 
   const handleFieldRowClick = async (field: DictionaryFieldWithDomains) => {
+    if (isReadOnly) return;
     setEditingField(field);
 
     // Check match table existence for Picklist fields
@@ -107,6 +151,7 @@ export function DictionaryPageContent({
   };
 
   const handleFieldDeleteClick = (field: DictionaryFieldWithDomains) => {
+    if (isReadOnly) return;
     setDeletingField(field);
     setIsDeleteFieldOpen(true);
   };
@@ -150,16 +195,19 @@ export function DictionaryPageContent({
 
   // --- Domain handlers ---
   const handleCreateDomainClick = () => {
+    if (isReadOnly) return;
     setEditingDomain(null);
     setIsDomainFormOpen(true);
   };
 
   const handleDomainRowClick = (domain: DictionaryDomain) => {
+    if (isReadOnly) return;
     setEditingDomain(domain);
     setIsDomainFormOpen(true);
   };
 
   const handleDomainDeleteClick = async (domain: DictionaryDomain) => {
+    if (isReadOnly) return;
     setDeletingDomain(domain);
     const count = await getFieldCountForDomain(domain.id);
     setDomainFieldCount(count);
@@ -265,14 +313,23 @@ export function DictionaryPageContent({
           Data Dictionary
         </h1>
         <div className="flex items-center gap-2">
-          {/* Version dropdown placeholder — wired in Plan 03 */}
-          {activeTab === "fields" && (
+          {/* Version dropdown */}
+          <VersionDropdown
+            versions={versions}
+            currentVersionId={viewingVersionId}
+            isReadOnly={isReadOnly}
+            onViewVersion={viewVersion}
+            onSwitchToDraft={switchToDraft}
+            onPublish={() => setIsPublishDialogOpen(true)}
+            onCompare={() => setIsDiffDialogOpen(true)}
+          />
+          {activeTab === "fields" && !isReadOnly && (
             <Button onClick={handleCreateFieldClick}>
               <Plus className="mr-2 h-4 w-4" />
               Create Field
             </Button>
           )}
-          {activeTab === "domains" && (
+          {activeTab === "domains" && !isReadOnly && (
             <Button onClick={handleCreateDomainClick}>
               <Plus className="mr-2 h-4 w-4" />
               Add Domain
@@ -280,6 +337,15 @@ export function DictionaryPageContent({
           )}
         </div>
       </div>
+
+      {/* Version banner when viewing published version */}
+      {isReadOnly && currentViewingVersion && (
+        <VersionBanner
+          versionNumber={currentViewingVersion.version_number}
+          label={currentViewingVersion.label}
+          onSwitchToDraft={switchToDraft}
+        />
+      )}
 
       <DictionaryTabs
         fieldsContent={fieldsContent}
@@ -323,6 +389,19 @@ export function DictionaryPageContent({
         domainName={deletingDomain?.name ?? ""}
         fieldCount={domainFieldCount}
         onConfirm={handleDomainDeleteConfirm}
+      />
+
+      {/* Version dialogs */}
+      <PublishVersionDialog
+        open={isPublishDialogOpen}
+        onOpenChange={setIsPublishDialogOpen}
+        onPublish={handlePublish}
+      />
+
+      <DiffViewDialog
+        open={isDiffDialogOpen}
+        onOpenChange={setIsDiffDialogOpen}
+        versions={versions}
       />
     </div>
   );
