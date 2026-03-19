@@ -16,7 +16,9 @@ import { DeleteRelationshipDialog } from "./relationships/delete-relationship-di
 import { OntologyGraph } from "./graph/ontology-graph";
 import { GraphControls } from "./graph/graph-controls";
 import { GraphExport } from "./graph/graph-export";
+import { SyncButton } from "./sync/sync-button";
 import { useGraphData } from "../hooks/use-graph-data";
+import { useOntologySyncStatus } from "../hooks/use-ontology-sync";
 import type { Core } from "cytoscape";
 import {
   createOntologyClass,
@@ -31,6 +33,7 @@ import {
   deleteOntologyRelationship,
   createRelationshipType,
 } from "../actions/relationship-actions";
+import { syncOntologyToCognee } from "../actions/sync-actions";
 import type {
   OntologyClass,
   OntologyClassInput,
@@ -70,6 +73,10 @@ export function OntologyPageContent({ classes }: OntologyPageContentProps) {
   const [isDeleteRelOpen, setIsDeleteRelOpen] = React.useState(false);
   const [deletingRelationship, setDeletingRelationship] =
     React.useState<OntologyRelationshipWithNames | null>(null);
+
+  // --- Sync state ---
+  const { isStale, isSyncing, setIsSyncing, checkStaleness } =
+    useOntologySyncStatus();
 
   // --- Graph state ---
   const cyRef = React.useRef<Core | null>(null);
@@ -155,6 +162,7 @@ export function OntologyPageContent({ classes }: OntologyPageContentProps) {
       toast.success(`Class "${input.name}" updated.`);
       router.refresh();
       await fetchRelationshipData();
+      await checkStaleness();
       return {};
     } else {
       const result = await createOntologyClass(input);
@@ -164,6 +172,7 @@ export function OntologyPageContent({ classes }: OntologyPageContentProps) {
       }
       toast.success(`Class "${input.name}" created.`);
       router.refresh();
+      await checkStaleness();
       return {};
     }
   };
@@ -186,6 +195,7 @@ export function OntologyPageContent({ classes }: OntologyPageContentProps) {
     );
     router.refresh();
     await fetchRelationshipData();
+    await checkStaleness();
   };
 
   // --- Relationship handlers ---
@@ -204,6 +214,7 @@ export function OntologyPageContent({ classes }: OntologyPageContentProps) {
     toast.success("Relationship created.");
     await fetchRelationshipData();
     router.refresh();
+    await checkStaleness();
     return {};
   };
 
@@ -226,6 +237,7 @@ export function OntologyPageContent({ classes }: OntologyPageContentProps) {
     toast.success("Relationship deleted.");
     await fetchRelationshipData();
     router.refresh();
+    await checkStaleness();
   };
 
   const handleCreateRelationType = async (name: string) => {
@@ -237,6 +249,30 @@ export function OntologyPageContent({ classes }: OntologyPageContentProps) {
     toast.success(`Relationship type "${name}" created.`);
     await fetchRelationshipData();
   };
+
+  // --- Sync handler ---
+  const handleSync = React.useCallback(async () => {
+    setIsSyncing(true);
+    try {
+      const result = await syncOntologyToCognee();
+      if (result.error) {
+        toast.error(
+          `Sync failed: ${result.error}. Check the Cognee connection status on the dashboard and try again.`,
+          { duration: Infinity }
+        );
+        return;
+      }
+      toast.success("Ontology synced to Cognee", { duration: 4000 });
+      await checkStaleness();
+    } catch {
+      toast.error(
+        "Sync failed: unexpected error. Check the Cognee connection status on the dashboard and try again.",
+        { duration: Infinity }
+      );
+    } finally {
+      setIsSyncing(false);
+    }
+  }, [setIsSyncing, checkStaleness]);
 
   const handleTabChange = React.useCallback((tab: string) => {
     setActiveTab(tab);
@@ -321,9 +357,11 @@ export function OntologyPageContent({ classes }: OntologyPageContentProps) {
           Ontology Editor
         </h1>
         <div className="flex items-center gap-2">
-          <Button variant="outline" disabled title="Sync to Cognee">
-            Sync to Cognee
-          </Button>
+          <SyncButton
+            isStale={isStale}
+            isSyncing={isSyncing}
+            onSync={handleSync}
+          />
           {activeTab === "classes" && (
             <Button onClick={handleCreateClick}>
               <Plus className="mr-2 h-4 w-4" />
