@@ -113,7 +113,7 @@ export function DictionaryPageContent({
 
   const handleFieldSave = async (
     input: DictionaryFieldInput
-  ): Promise<{ error?: string }> => {
+  ): Promise<{ error?: string; fieldId?: string }> => {
     if (editingField) {
       const result = await updateDictionaryField(editingField.id, input);
       if (result.error) {
@@ -122,7 +122,7 @@ export function DictionaryPageContent({
       }
       toast.success(`Field "${input.fieldName}" updated.`);
       router.refresh();
-      return {};
+      return { fieldId: editingField.id };
     } else {
       const result = await createDictionaryField(input);
       if (result.error) {
@@ -131,7 +131,7 @@ export function DictionaryPageContent({
       }
       toast.success(`Field "${input.fieldName}" created.`);
       router.refresh();
-      return {};
+      return { fieldId: result.data?.id };
     }
   };
 
@@ -295,6 +295,7 @@ export function DictionaryPageContent({
         onOpenChange={setIsFieldFormOpen}
         editingField={editingField}
         domains={domains}
+        allFields={fields}
         onSave={handleFieldSave}
         matchTableExists={matchTableExists}
       />

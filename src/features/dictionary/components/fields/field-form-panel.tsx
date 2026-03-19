@@ -32,10 +32,19 @@ import {
   DOMAIN_COLOUR_PALETTE,
 } from "../../lib/constants";
 import { toTitleCase, validateFieldName } from "../../lib/validators";
+import { getPicklistValues, getConcatenatedRefs } from "../../actions/value-actions";
+import { savePicklistValues, saveConcatenatedRefs } from "../../actions/value-actions";
+import { uploadMatchTable } from "../../actions/match-table-actions";
+import { PicklistValuesDialog } from "./picklist-values-dialog";
+import { ConcatenatedFieldsDialog } from "./concatenated-fields-dialog";
+import { MatchTableUploadDialog } from "./match-table-upload-dialog";
 import type {
   DictionaryDomain,
+  DictionaryField,
   DictionaryFieldInput,
   DictionaryFieldWithDomains,
+  PicklistValueInput,
+  ConcatenatedRefInput,
 } from "../../types/dictionary";
 
 interface FieldFormPanelProps {
@@ -43,7 +52,8 @@ interface FieldFormPanelProps {
   onOpenChange: (open: boolean) => void;
   editingField: DictionaryFieldWithDomains | null;
   domains: DictionaryDomain[];
-  onSave: (input: DictionaryFieldInput) => Promise<{ error?: string }>;
+  allFields: DictionaryField[];
+  onSave: (input: DictionaryFieldInput) => Promise<{ error?: string; fieldId?: string }>;
   matchTableExists: boolean;
 }
 
@@ -52,6 +62,7 @@ export function FieldFormPanel({
   onOpenChange,
   editingField,
   domains,
+  allFields,
   onSave,
   matchTableExists,
 }: FieldFormPanelProps) {
@@ -70,6 +81,15 @@ export function FieldFormPanel({
   const [isSaving, setIsSaving] = React.useState(false);
   const [showDomainDropdown, setShowDomainDropdown] = React.useState(false);
 
+  // Nested dialog state
+  const [isPicklistDialogOpen, setIsPicklistDialogOpen] = React.useState(false);
+  const [isConcatDialogOpen, setIsConcatDialogOpen] = React.useState(false);
+  const [isMatchTableDialogOpen, setIsMatchTableDialogOpen] = React.useState(false);
+
+  // Value state
+  const [picklistValues, setPicklistValues] = React.useState<PicklistValueInput[]>([]);
+  const [concatenatedRefs, setConcatenatedRefs] = React.useState<ConcatenatedRefInput[]>([]);
+
   // Reset form when editingField or open changes
   React.useEffect(() => {
     if (open) {
@@ -81,6 +101,37 @@ export function FieldFormPanel({
         setSelectedDomainIds([...editingField.domain_ids]);
         setAiInstruction(editingField.ai_instruction ?? "");
         setControlled(editingField.controlled);
+
+        // Load sub-entity data for editing
+        if (editingField.value_type === "Picklist") {
+          getPicklistValues(editingField.id).then((result) => {
+            if (result.data) {
+              setPicklistValues(
+                result.data.map((v) => ({
+                  value: v.value,
+                  definition: v.definition ?? undefined,
+                }))
+              );
+            }
+          });
+        } else {
+          setPicklistValues([]);
+        }
+
+        if (editingField.value_type === "Concatenated") {
+          getConcatenatedRefs(editingField.id).then((result) => {
+            if (result.data) {
+              setConcatenatedRefs(
+                result.data.map((r) => ({
+                  referencedFieldId: r.referenced_field_id,
+                  position: r.position,
+                }))
+              );
+            }
+          });
+        } else {
+          setConcatenatedRefs([]);
+        }
       } else {
         setFieldName("");
         setFieldDefinition("");
@@ -89,6 +140,8 @@ export function FieldFormPanel({
         setSelectedDomainIds([]);
         setAiInstruction("");
         setControlled(false);
+        setPicklistValues([]);
+        setConcatenatedRefs([]);
       }
       setNameError(null);
       setShowDomainDropdown(false);
@@ -130,11 +183,39 @@ export function FieldFormPanel({
       return;
     }
 
+    // Save sub-entity data after field save
+    const fieldId = result.fieldId ?? editingField?.id;
+    if (fieldId) {
+      if (valueType === "Picklist" && picklistValues.length > 0) {
+        await savePicklistValues(fieldId, picklistValues);
+      }
+      if (valueType === "Concatenated" && concatenatedRefs.length > 0) {
+        await saveConcatenatedRefs(fieldId, concatenatedRefs);
+      }
+    }
+
     onOpenChange(false);
   };
 
   const handleOpenChange = (nextOpen: boolean) => {
     onOpenChange(nextOpen);
+  };
+
+  const handlePicklistSave = (values: PicklistValueInput[]) => {
+    setPicklistValues(values);
+  };
+
+  const handleConcatenatedSave = (refs: ConcatenatedRefInput[]) => {
+    setConcatenatedRefs(refs);
+  };
+
+  const handleMatchTableUpload = async (
+    columns: string[],
+    data: Record<string, string>[]
+  ) => {
+    if (editingField) {
+      await uploadMatchTable(editingField.id, columns, data);
+    }
   };
 
   const availableDomains = domains.filter(
@@ -150,8 +231,15 @@ export function FieldFormPanel({
     setSelectedDomainIds((prev) => prev.filter((id) => id !== domainId));
   };
 
-  // Get picklist value count placeholder
-  const picklistValueCount = 0; // Will be populated in Plan 03
+  // Build concatenated preview from refs
+  const concatenatedPreview = concatenatedRefs
+    .filter((r) => r.referencedFieldId)
+    .slice(0, 2)
+    .map((r) => {
+      const field = allFields.find((f) => f.id === r.referencedFieldId);
+      return field?.field_name ?? "Unknown";
+    })
+    .join(" | ");
 
   return (
     <Sheet open={open} onOpenChange={handleOpenChange}>
@@ -348,44 +436,60 @@ export function FieldFormPanel({
 
           {/* Conditional sections for Picklist / Concatenated */}
           {valueType === "Picklist" && (
-            <div className="pt-2 border-t">
-              <Tooltip>
-                <TooltipTrigger
-                  render={
-                    <Button
-                      variant="outline"
-                      className="w-full opacity-50 pointer-events-none"
-                      disabled
-                    >
-                      Manage Values ({picklistValueCount})
-                    </Button>
-                  }
-                />
-                <TooltipContent>
-                  Available after saving field. Enabled in the next update.
-                </TooltipContent>
-              </Tooltip>
+            <div className="pt-2 border-t space-y-2">
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => setIsPicklistDialogOpen(true)}
+              >
+                Manage Values ({picklistValues.length})
+              </Button>
+
+              {/* Match table upload — show when Picklist + controlled but no match table */}
+              {controlled && !matchTableExists && editingField && (
+                <div className="rounded-lg border border-amber-200 bg-amber-50 dark:bg-amber-950/20 p-3 text-sm">
+                  <p className="text-muted-foreground mb-2">
+                    No match table uploaded. Upload a CSV to define controlled values.
+                  </p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setIsMatchTableDialogOpen(true)}
+                  >
+                    Upload CSV
+                  </Button>
+                </div>
+              )}
+
+              {/* Also show upload option when match table doesn't exist, regardless of controlled */}
+              {!matchTableExists && editingField && !controlled && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full"
+                  onClick={() => setIsMatchTableDialogOpen(true)}
+                >
+                  Upload Match Table CSV
+                </Button>
+              )}
             </div>
           )}
 
           {valueType === "Concatenated" && (
-            <div className="pt-2 border-t">
-              <Tooltip>
-                <TooltipTrigger
-                  render={
-                    <Button
-                      variant="outline"
-                      className="w-full opacity-50 pointer-events-none"
-                      disabled
-                    >
-                      Configure Fields
-                    </Button>
-                  }
-                />
-                <TooltipContent>
-                  Available after saving field. Enabled in the next update.
-                </TooltipContent>
-              </Tooltip>
+            <div className="pt-2 border-t space-y-1">
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => setIsConcatDialogOpen(true)}
+              >
+                Configure Fields ({concatenatedRefs.length})
+              </Button>
+              {concatenatedPreview && (
+                <p className="text-xs text-muted-foreground px-1">
+                  {concatenatedPreview}
+                  {concatenatedRefs.length > 2 ? " ..." : ""}
+                </p>
+              )}
             </div>
           )}
         </div>
@@ -400,6 +504,35 @@ export function FieldFormPanel({
           </Button>
         </SheetFooter>
       </SheetContent>
+
+      {/* Nested dialogs */}
+      <PicklistValuesDialog
+        open={isPicklistDialogOpen}
+        onOpenChange={setIsPicklistDialogOpen}
+        fieldName={fieldName}
+        fieldId={editingField?.id ?? null}
+        initialValues={picklistValues}
+        onSave={handlePicklistSave}
+      />
+
+      <ConcatenatedFieldsDialog
+        open={isConcatDialogOpen}
+        onOpenChange={setIsConcatDialogOpen}
+        fieldName={fieldName}
+        currentFieldId={editingField?.id ?? null}
+        availableFields={allFields}
+        initialRefs={concatenatedRefs}
+        onSave={handleConcatenatedSave}
+      />
+
+      {editingField && (
+        <MatchTableUploadDialog
+          open={isMatchTableDialogOpen}
+          onOpenChange={setIsMatchTableDialogOpen}
+          fieldId={editingField.id}
+          onUpload={handleMatchTableUpload}
+        />
+      )}
     </Sheet>
   );
 }
