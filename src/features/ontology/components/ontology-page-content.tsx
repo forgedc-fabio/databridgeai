@@ -188,7 +188,7 @@ export function OntologyPageContent({ classes }: OntologyPageContentProps) {
 
     toast.success(
       `Class "${deletingClass.name}" deleted${
-        result.data.deletedRelationships > 0
+        result.data?.deletedRelationships && result.data.deletedRelationships > 0
           ? ` (${result.data.deletedRelationships} relationship(s) removed)`
           : ""
       }.`

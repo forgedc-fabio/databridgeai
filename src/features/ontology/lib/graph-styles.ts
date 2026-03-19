@@ -1,11 +1,11 @@
-import type { Stylesheet } from "cytoscape";
+import type { StylesheetStyle } from "cytoscape";
 
 /**
  * Cytoscape stylesheet for the ontology graph visualisation.
  * Defines node, edge, dimmed, and highlighted styles.
  * Domain colours are imported from types/ontology.ts.
  */
-export const graphStyles: Stylesheet[] = [
+export const graphStyles: StylesheetStyle[] = [
   {
     selector: "node",
     style: {

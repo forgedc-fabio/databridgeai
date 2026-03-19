@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Maximize2, Unfold, Fold } from "lucide-react";
+import { Maximize2, UnfoldVertical, FoldVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -39,8 +39,8 @@ export function GraphControls({
   }, [classes, searchQuery]);
 
   const handleDomainChange = React.useCallback(
-    (value: string) => {
-      onDomainFilter(value === "all" ? null : value);
+    (value: string | null) => {
+      onDomainFilter(!value || value === "all" ? null : value);
     },
     [onDomainFilter]
   );
@@ -63,7 +63,7 @@ export function GraphControls({
 
     if (isCollapsed) {
       // Show all nodes
-      cy.elements().show();
+      (cy.elements() as unknown as { show(): void }).show();
       setIsCollapsed(false);
     } else {
       // Hide leaf nodes (nodes with no outgoing "is-a" edges)
@@ -96,7 +96,7 @@ export function GraphControls({
 
       // Hide descendants (keep roots visible)
       descendants.forEach((id) => {
-        cy.getElementById(id).hide();
+        (cy.getElementById(id) as unknown as { hide(): void }).hide();
       });
       setIsCollapsed(true);
     }
@@ -161,9 +161,9 @@ export function GraphControls({
         title={isCollapsed ? "Expand All" : "Collapse Subtrees"}
       >
         {isCollapsed ? (
-          <Unfold className="h-4 w-4" />
+          <UnfoldVertical className="h-4 w-4" />
         ) : (
-          <Fold className="h-4 w-4" />
+          <FoldVertical className="h-4 w-4" />
         )}
       </Button>
     </div>

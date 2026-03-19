@@ -31,7 +31,7 @@ const CytoscapeGraphInner = forwardRef<Core | null, CytoscapeGraphInnerProps>(
   function CytoscapeGraphInner({ elements, onNodeClick, readOnly }, ref) {
     const cyRef = useRef<Core | null>(null);
 
-    useImperativeHandle(ref, () => cyRef.current, []);
+    useImperativeHandle(ref, () => cyRef.current as Core, []);
 
     const setCyRef = useCallback(
       (cy: Core) => {
@@ -65,7 +65,7 @@ const CytoscapeGraphInner = forwardRef<Core | null, CytoscapeGraphInnerProps>(
       <CytoscapeComponent
         elements={elements}
         stylesheet={graphStyles}
-        layout={{ name: "dagre", rankDir: "TB", nodeSep: 50, rankSep: 80 }}
+        layout={{ name: "dagre", rankDir: "TB", nodeSep: 50, rankSep: 80 } as cytoscape.LayoutOptions}
         style={{ width: "100%", height: "100%" }}
         cy={setCyRef}
         userPanningEnabled
