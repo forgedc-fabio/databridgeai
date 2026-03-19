@@ -27,4 +27,5 @@ ENV PYTHONPATH="/app"
 ENV PYTHONUNBUFFERED=1
 
 # Cloud Run injects PORT env var; default to 8000 for local dev
-CMD ["sh", "-c", "uvicorn cognee.api.client:app --host 0.0.0.0 --port ${PORT:-8000}"]
+# Use main:app to serve our custom FastAPI app (wraps Cognee routes + OWL sync endpoint)
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]

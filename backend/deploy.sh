@@ -22,6 +22,8 @@ gcloud run deploy "${SERVICE_NAME}" \
   --project "${PROJECT_ID}" \
   --set-secrets "LLM_API_KEY=ANTHROPIC_API_KEY:latest" \
   --set-secrets "EMBEDDING_API_KEY=OPENAI_API_KEY:latest" \
+  --set-secrets "SUPABASE_URL=SUPABASE_URL:latest" \
+  --set-secrets "SUPABASE_SERVICE_ROLE_KEY=SUPABASE_SERVICE_ROLE_KEY:latest" \
   --set-env-vars "LLM_PROVIDER=anthropic,LLM_MODEL=claude-sonnet-4-20250514,GRAPH_DATABASE_PROVIDER=networkx,EMBEDDING_PROVIDER=openai,EMBEDDING_MODEL=openai/text-embedding-3-large,REQUIRE_AUTHENTICATION=false,LOG_LEVEL=INFO" \
   --memory 2Gi \
   --cpu 2 \
