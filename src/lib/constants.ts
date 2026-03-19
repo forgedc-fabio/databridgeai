@@ -23,7 +23,7 @@ export const NAV_ITEMS = [
     title: "Dictionary",
     url: "/dictionary",
     icon: BookOpen,
-    enabled: false, // Phase 3
+    enabled: true, // Phase 3
   },
   {
     title: "Rules",
