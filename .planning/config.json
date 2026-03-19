@@ -9,9 +9,17 @@
     "research": true,
     "plan_check": true,
     "verifier": true,
-    "auto_advance": false,
+    "auto_advance": true,
     "nyquist_validation": true,
+    "ui_phase": true,
+    "ui_safety_gate": true,
     "_auto_chain_active": false
+  },
+  "git": {
+    "branching_strategy": "none"
+  },
+  "hooks": {
+    "context_warnings": true
   },
   "created_at": "2026-03-18",
   "project": "DataBridgeAI"
