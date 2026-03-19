@@ -15,11 +15,11 @@ Content uploaded to the system is accurately classified against a user-defined o
 ### Validated
 
 - [x] Deploy infrastructure (Vercel + Supabase + Cloud Run with Cognee) — Validated in Phase 01: Infrastructure
+- [x] Ontology editor UI (classes, properties, hierarchies, constraints) — Validated in Phase 02: Ontology Management
+- [x] Ontology visualisation (read-only, presentation mode, export) — Validated in Phase 02: Ontology Management
+- [x] Ontology sync to Cognee (OWL/RDF generation, stale indicator) — Validated in Phase 02: Ontology Management
 
 ### Active
-- [ ] Ontology editor UI (classes, properties, hierarchies, constraints)
-- [ ] Ontology visualisation (read-only, presentation mode, export)
-- [ ] Ontology sync to Cognee (OWL/RDF generation, stale indicator)
 - [ ] Data dictionary management (45+ fields across 7 categories, versioning)
 - [ ] Data dictionary visualisation (graph and table/tree views)
 - [ ] Rules editor (structured L0-L4 hierarchy, JSONB, versioned, Markdown export)
@@ -68,9 +68,9 @@ Content uploaded to the system is accurately classified against a user-defined o
 | Frontend on Vercel | Native Next.js support, preview deployments, Supabase integration | Validated — Phase 01 |
 | Supabase for data + auth + storage | Unified data plane, RLS, Realtime, Storage for OWL files and content | Validated — Phase 01 |
 | Cloud Run for Cognee | Scale-to-zero, pay-per-request, europe-west1 | Validated — Phase 01 |
-| Ontology as first-class UI concept | Users define and manage the domain model directly, not just flat taxonomy | -- Pending |
+| Ontology as first-class UI concept | Users define and manage the domain model directly, not just flat taxonomy | Validated — Phase 02 |
 | Structured rules in JSONB (not raw documents) | Enables structured editing, validation, versioning, and Markdown export | -- Pending |
-| react-cytoscapejs for ontology graphs | Supports editable DAG layouts, hierarchical views | -- Pending |
+| react-cytoscapejs for ontology graphs | Supports editable DAG layouts, hierarchical views | Validated — Phase 02 |
 
 ---
-*Last updated: 2026-03-18 — Phase 01 Infrastructure complete*
+*Last updated: 2026-03-19 — Phase 02 Ontology Management complete*
