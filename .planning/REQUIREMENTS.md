@@ -23,9 +23,9 @@
 - [x] **ONT-05**: Ontology data is tenant-scoped (tenant_id) with RLS
 - [x] **ONT-06**: Ontology editor has three views: Class List, Relationship Editor, Visual Graph
 - [x] **ONT-07**: Visual graph uses Cytoscape.js with hierarchical/DAG layout
-- [ ] **ONT-08**: User can view read-only presentation-optimised ontology visualisation
+- [x] **ONT-08**: User can view read-only presentation-optimised ontology visualisation
 - [x] **ONT-09**: Visualisation supports filter by domain, expand/collapse, and search
-- [ ] **ONT-10**: User can export ontology visualisation as PNG/SVG
+- [x] **ONT-10**: User can export ontology visualisation as PNG/SVG
 - [x] **ONT-11**: Ontology syncs to Cognee as OWL/RDF file via Cloud Run endpoint
 - [x] **ONT-12**: UI shows stale indicator when ontology changed since last sync
 - [x] **ONT-13**: OWL generated via rdflib on Cloud Run and stored in Supabase Storage
@@ -111,9 +111,9 @@
 | ONT-05 | Phase 2 | Complete |
 | ONT-06 | Phase 2 | Complete |
 | ONT-07 | Phase 2 | Complete |
-| ONT-08 | Phase 2 | Pending |
+| ONT-08 | Phase 2 | Complete |
 | ONT-09 | Phase 2 | Complete |
-| ONT-10 | Phase 2 | Pending |
+| ONT-10 | Phase 2 | Complete |
 | ONT-11 | Phase 2 | Complete |
 | ONT-12 | Phase 2 | Complete |
 | ONT-13 | Phase 2 | Complete |
