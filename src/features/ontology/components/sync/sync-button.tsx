@@ -42,7 +42,7 @@ export function SyncButton({ isStale, isSyncing, onSync }: SyncButtonProps) {
   if (isStale && !isSyncing) {
     return (
       <Tooltip>
-        <TooltipTrigger className="inline-flex">{button}</TooltipTrigger>
+        <TooltipTrigger render={<div className="inline-flex" />}>{button}</TooltipTrigger>
         <TooltipContent>
           <p>Ontology has changed since last sync</p>
         </TooltipContent>

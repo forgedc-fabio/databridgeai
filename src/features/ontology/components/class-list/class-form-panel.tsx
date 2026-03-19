@@ -48,7 +48,7 @@ export function ClassFormPanel({
 }: ClassFormPanelProps) {
   const [name, setName] = React.useState("");
   const [description, setDescription] = React.useState("");
-  const [domainGroup, setDomainGroup] = React.useState<string>("");
+  const [domainGroup, setDomainGroup] = React.useState<string | undefined>(undefined);
   const [colour, setColour] = React.useState("#6366f1");
   const [iconTag, setIconTag] = React.useState("");
   const [customAttributes, setCustomAttributes] = React.useState<
@@ -63,7 +63,7 @@ export function ClassFormPanel({
       if (editingClass) {
         setName(editingClass.name);
         setDescription(editingClass.description ?? "");
-        setDomainGroup(editingClass.domain_group ?? "");
+        setDomainGroup(editingClass.domain_group ?? undefined);
         setColour(editingClass.colour);
         setIconTag(editingClass.icon_tag ?? "");
         setCustomAttributes(
@@ -74,7 +74,7 @@ export function ClassFormPanel({
       } else {
         setName("");
         setDescription("");
-        setDomainGroup("");
+        setDomainGroup(undefined);
         setColour("#6366f1");
         setIconTag("");
         setCustomAttributes([]);

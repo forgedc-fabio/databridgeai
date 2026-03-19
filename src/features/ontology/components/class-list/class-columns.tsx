@@ -85,7 +85,7 @@ export const classColumns: ColumnDef<OntologyClass>[] = [
     accessorKey: "updated_at",
     header: "Updated",
     cell: ({ row }) => (
-      <span className="text-muted-foreground">
+      <span className="text-muted-foreground" suppressHydrationWarning>
         {formatRelativeTime(row.getValue("updated_at") as string)}
       </span>
     ),
